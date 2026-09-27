@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  gangcinta-website:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: GangCinta-Website
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    volumes:
+      # Persist SQLite database file
+      - gangcinta-data:/app/server
+volumes:
+  gangcinta-data:

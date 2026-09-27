@@ -86,7 +86,7 @@ export default function FloatingChatWidget({ isOpen, setIsOpen }) {
     }
   }, [messages, isOpen]);
 
-  const activeCount = onlineList.filter((u) => u.isOnline).length || 3;
+  const activeCount = onlineList.filter((u) => u.isOnline).length;
   const latestMessage = messages.length > 0 ? messages[messages.length - 1] : null;
 
   const handleSend = async (e) => {

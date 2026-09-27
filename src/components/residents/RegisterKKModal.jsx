@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { familyService, authService } from "../../services/storageService";
 import { api } from "../../services/apiService";
 import { useAuth } from "../../context/AuthContext";
+import KKUploadDropzone from "../common/KKUploadDropzone";
 import { X, UserPlus, Home, KeyRound, Phone, ShieldCheck, CheckCircle2, UserCheck, Sparkles, Award } from "lucide-react";
 
 export default function RegisterKKModal({ isOpen, onClose, onKKRegistered }) {
@@ -11,6 +12,8 @@ export default function RegisterKKModal({ isOpen, onClose, onKKRegistered }) {
   const [block, setBlock] = useState("Blok F4");
   const [houseNumber, setHouseNumber] = useState("");
   const [phone, setPhone] = useState("");
+  const [kkNumber, setKkNumber] = useState("");
+  const [members, setMembers] = useState([]);
   
   // Custom manual typing & professional RT/Gang icons
   const [selectedIcon, setSelectedIcon] = useState("👤");
@@ -20,6 +23,22 @@ export default function RegisterKKModal({ isOpen, onClose, onKKRegistered }) {
   // Account creation fields
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("123");
+
+  const handleKKParsed = (parsed) => {
+    if (parsed.headOfFamily) {
+      setHeadOfFamily(parsed.headOfFamily);
+      const cleanName = parsed.headOfFamily.toLowerCase().replace(/[^a-z0-9]/g, "");
+      const houseDigits = (parsed.houseNumber || houseNumber).replace(/\D/g, "");
+      const suggested = houseDigits ? `${cleanName.slice(0, 10)}${houseDigits}` : cleanName.slice(0, 12);
+      setUsername(suggested);
+    }
+    if (parsed.block) setBlock(parsed.block);
+    if (parsed.houseNumber) setHouseNumber(parsed.houseNumber);
+    if (parsed.kkNumber) setKkNumber(parsed.kkNumber);
+    if (parsed.phone) setPhone(parsed.phone);
+    if (parsed.members && parsed.members.length > 0) setMembers(parsed.members);
+    showToast("Data dari foto KK berhasil mengisi formulir pendaftaran!", "success");
+  };
 
   if (!isOpen) return null;
 
@@ -123,7 +142,7 @@ export default function RegisterKKModal({ isOpen, onClose, onKKRegistered }) {
 
       // 2. Create Family Record
       const familyPayload = {
-        kkNumber: "-",
+        kkNumber: kkNumber || "-",
         headOfFamily: headOfFamily.trim(),
         block: cleanBlock,
         houseNumber: formattedHouseNo,
@@ -131,7 +150,8 @@ export default function RegisterKKModal({ isOpen, onClose, onKKRegistered }) {
         houseStatus: "Milik Sendiri",
         phone: phone.trim(),
         emergencyContact: "",
-        assignedUserId: newUser?.id || null
+        assignedUserId: newUser?.id || null,
+        ...(members.length > 0 ? { members, isProfileCompleted: true } : {})
       };
 
       let newFamily;
@@ -199,6 +219,9 @@ export default function RegisterKKModal({ isOpen, onClose, onKKRegistered }) {
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
+
+          {/* Upload / Foto Scan KK Auto-Fill */}
+          <KKUploadDropzone onKKParsed={handleKKParsed} title="Unggah / Foto Scan KK untuk Pendaftaran Cepat" />
 
           {/* Section 1: Data Utama Warga & Rumah */}
           <div className="space-y-3.5">

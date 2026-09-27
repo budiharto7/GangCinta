@@ -23,6 +23,14 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
       phone: parsed.phone || prev.phone,
       members: parsed.members && parsed.members.length > 0 ? parsed.members : prev.members
     }));
+
+    if (parsed.headOfFamily && (!username || username.startsWith("warga_"))) {
+      const cleanName = parsed.headOfFamily.toLowerCase().replace(/[^a-z0-9]/g, "");
+      const houseDigits = (parsed.houseNumber || "").replace(/\D/g, "");
+      const suggested = houseDigits ? `${cleanName.slice(0, 10)}${houseDigits}` : cleanName.slice(0, 12);
+      setUsername(suggested);
+    }
+
     showToast("Data Foto/Scan KK berhasil diekstraksi ke form!", "success");
   };
 

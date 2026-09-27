@@ -228,5 +228,13 @@ export const api = {
     const res = await request("/chat", { method: "DELETE" });
     if (res && res.success) return res;
     return chatService.clearMessages();
+  },
+
+  // Kartu Keluarga OCR Auto-Fill
+  async parseKK(imageData) {
+    return await request("/parse-kk", {
+      method: "POST",
+      body: JSON.stringify({ image: imageData })
+    });
   }
 };

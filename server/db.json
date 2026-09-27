@@ -606,5 +606,26 @@
       "reportedAt": "2026-09-19T09:15:00Z"
     }
   ],
-  "chatMessages": []
+  "chatMessages": [
+    {
+      "id": "chat-1790509467359",
+      "senderId": "user-warga-1",
+      "senderName": "Budi",
+      "senderRole": "anggota",
+      "senderAvatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
+      "senderHouse": "No. 04",
+      "message": "Selamat pagi Gang Cinta ☀️",
+      "timestamp": "2026-09-27T11:44:27.360Z"
+    },
+    {
+      "id": "chat-1790509477608",
+      "senderId": "user-admin-1",
+      "senderName": "Suryadi S",
+      "senderRole": "admin",
+      "senderAvatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "senderHouse": "No. 01",
+      "message": "Selamat pagi Gang Cinta ☀️",
+      "timestamp": "2026-09-27T11:44:37.608Z"
+    }
+  ]
 }

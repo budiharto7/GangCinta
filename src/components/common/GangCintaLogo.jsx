@@ -97,10 +97,11 @@ export default function GangCintaLogo({
         <div className="min-w-0 text-left">
           {showText && (
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <span className="font-extrabold text-sm sm:text-lg text-white tracking-tight truncate drop-shadow-xs">
-                Gang Cinta
+              <span className="font-extrabold text-sm sm:text-lg text-white tracking-tight truncate drop-shadow-xs flex items-center gap-1.5">
+                <span>Gang Cinta</span>
+                <span className="text-[10px] sm:text-[11px] font-mono font-bold text-amber-300 lowercase bg-black/25 px-1.5 py-0.5 rounded-md border border-amber-300/30">gangcinta</span>
               </span>
-              <span className="text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full bg-white/20 text-white font-extrabold border border-white/30 backdrop-blur whitespace-nowrap shadow-2xs">
+              <span className="hidden sm:inline-flex text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full bg-white/20 text-white font-extrabold border border-white/30 backdrop-blur whitespace-nowrap shadow-2xs">
                 RT 028 RW 005
               </span>
             </div>

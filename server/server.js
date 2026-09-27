@@ -4,6 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { db } from './database.js';
+import { processKKImageOCR } from './kkOcrService.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -342,6 +343,24 @@ app.post('/api/chat', (req, res) => {
 app.delete('/api/chat', (req, res) => {
   db.clearChatMessages();
   res.json({ success: true, message: 'Chat berhasil dibersihkan.' });
+});
+
+// Kartu Keluarga OCR Auto-Fill Endpoint
+app.post('/api/parse-kk', async (req, res) => {
+  try {
+    const { image } = req.body;
+    if (!image) {
+      return res.status(400).json({ success: false, message: 'File gambar KK tidak ditemukan.' });
+    }
+    const result = await processKKImageOCR(image);
+    res.json(result);
+  } catch (error) {
+    console.error('Error processing KK OCR:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Gagal memproses gambar KK: ' + (error.message || 'Kesalahan OCR.') 
+    });
+  }
 });
 
 // Serve static frontend in production if dist/ exists

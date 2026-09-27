@@ -356,6 +356,14 @@ export function initStorage() {
     setStored(KEYS.USERS, users);
   }
 
+  // Ensure default login status is logged out for everyone
+  if (!localStorage.getItem("gc_default_logout_v1")) {
+    try {
+      localStorage.removeItem(KEYS.CURRENT_USER);
+      localStorage.setItem("gc_default_logout_v1", "true");
+    } catch {}
+  }
+
   // Force sync CURRENT_USER if logged in
   try {
     const item = localStorage.getItem(KEYS.CURRENT_USER);
@@ -444,7 +452,7 @@ export const authService = {
       const item = localStorage.getItem(KEYS.CURRENT_USER);
       if (item) {
         let curr = JSON.parse(item);
-        if (curr && curr.isLoggedOut) return null;
+        if (curr && (curr.isLoggedOut || !curr.id)) return null;
         const users = this.getAllUsers();
         const updated = users.find(u => u.id === curr.id || (u.name && curr.name && u.name.trim().toLowerCase() === curr.name.trim().toLowerCase()));
         if (updated) {
@@ -452,13 +460,7 @@ export const authService = {
         }
         return curr;
       }
-      // On fresh deployment or first visit, default to Suryadi S (Ketua Gang) to match interactive portal
-      const users = this.getAllUsers();
-      const defaultUser = users[0] || INITIAL_USERS[0];
-      if (defaultUser) {
-        this.setCurrentUser(defaultUser);
-        return defaultUser;
-      }
+      // Default to logged out / guest mode
       return null;
     } catch {
       return null;

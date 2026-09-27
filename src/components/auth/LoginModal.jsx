@@ -65,30 +65,30 @@ export default function LoginModal({ isOpen, onClose, pendingActionName }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="relative w-full max-w-lg bg-white text-slate-900 rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-fade-in my-8">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+      <div className="relative w-full max-w-md bg-white text-slate-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-fade-in my-auto">
         
         {/* Header */}
-        <div className="px-6 py-5 theme-gradient-banner text-white flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <GangCintaLogo size="sm" variant="badge" />
-            <div>
-              <h3 className="font-bold text-base">Masuk Akun Gang Cinta</h3>
-              <p className="text-xs text-emerald-100">
-                {pendingActionName ? `Login diperlukan untuk: ${pendingActionName}` : "Perumahan Bumi Nagara Lestari • RT 028 RW 005"}
+        <div className="px-4 sm:px-6 py-3.5 sm:py-5 theme-gradient-banner text-white flex items-center justify-between">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <GangCintaLogo size="xs" variant="badge" />
+            <div className="min-w-0">
+              <h3 className="font-bold text-sm sm:text-base truncate">Masuk Akun Gang Cinta</h3>
+              <p className="text-[10px] sm:text-xs text-emerald-100 truncate">
+                {pendingActionName ? `Login: ${pendingActionName}` : "RT 028 RW 005"}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition"
+            className="p-1.5 sm:p-2 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition flex-shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div className="p-5 sm:p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+        <div className="p-4 sm:p-6 space-y-4 max-h-[85vh] overflow-y-auto">
           
           <form onSubmit={handleSubmit} autoComplete="off" className="space-y-3.5">
             <div>

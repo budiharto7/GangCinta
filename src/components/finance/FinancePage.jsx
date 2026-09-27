@@ -302,10 +302,10 @@ export default function FinancePage({ isTransactionOpen, setIsTransactionOpen })
         </div>
 
         {/* 4 Pillars Grid: Saldo Awal, Pemasukan, Pengeluaran, Saldo Akhir */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-4 rounded-2xl bg-white/10 border border-white/15 backdrop-blur">
-            <div className="flex items-center justify-between text-xs text-slate-200 font-medium">
-              <span>Total Saldo Awal</span>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+          <div className="p-3 sm:p-4 rounded-2xl bg-white/10 border border-white/15 backdrop-blur">
+            <div className="flex items-center justify-between text-[11px] sm:text-xs text-slate-200 font-medium">
+              <span className="truncate">Saldo Awal</span>
               {user?.role === "bendahara" && (
                 <button
                   onClick={() => setIsStartingBalanceOpen(true)}
@@ -316,61 +316,61 @@ export default function FinancePage({ isTransactionOpen, setIsTransactionOpen })
                 </button>
               )}
             </div>
-            <div className="text-xl font-black text-white mt-1.5">
+            <div className="text-base sm:text-xl font-black text-white mt-1 truncate">
               {formatRupiah(summary.startingBalance)}
             </div>
-            <span className="text-[11px] text-slate-300">Total awal 5 pos per 1 Sept</span>
+            <span className="text-[10px] sm:text-[11px] text-slate-300 truncate block">Total 5 pos per 1 Sept</span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white/10 border border-white/15 backdrop-blur">
-            <div className="flex items-center justify-between text-xs text-emerald-300 font-medium">
-              <span>Total Pemasukan</span>
-              <ArrowUpRight className="w-4 h-4 text-emerald-400" />
+          <div className="p-3 sm:p-4 rounded-2xl bg-white/10 border border-white/15 backdrop-blur">
+            <div className="flex items-center justify-between text-[11px] sm:text-xs text-emerald-300 font-medium">
+              <span className="truncate">Pemasukan</span>
+              <ArrowUpRight className="w-4 h-4 text-emerald-400 flex-shrink-0" />
             </div>
-            <div className="text-xl font-black text-emerald-300 mt-1.5">
+            <div className="text-base sm:text-xl font-black text-emerald-300 mt-1 truncate">
               +{formatRupiah(summary.totalIncome)}
             </div>
-            <span className="text-[11px] text-emerald-300/90">Iuran rutin 25 KK & kas</span>
+            <span className="text-[10px] sm:text-[11px] text-emerald-300/90 truncate block">Iuran rutin warga</span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white/10 border border-white/15 backdrop-blur">
-            <div className="flex items-center justify-between text-xs text-rose-300 font-medium">
-              <span>Total Pengeluaran</span>
-              <ArrowDownRight className="w-4 h-4 text-rose-400" />
+          <div className="p-3 sm:p-4 rounded-2xl bg-white/10 border border-white/15 backdrop-blur">
+            <div className="flex items-center justify-between text-[11px] sm:text-xs text-rose-300 font-medium">
+              <span className="truncate">Pengeluaran</span>
+              <ArrowDownRight className="w-4 h-4 text-rose-400 flex-shrink-0" />
             </div>
-            <div className="text-xl font-black text-rose-300 mt-1.5">
+            <div className="text-base sm:text-xl font-black text-rose-300 mt-1 truncate">
               -{formatRupiah(summary.totalExpense)}
             </div>
-            <span className="text-[11px] text-rose-300/90">{summary.expenseList.length} transaksi peruntukan</span>
+            <span className="text-[10px] sm:text-[11px] text-rose-300/90 truncate block">{summary.expenseList.length} transaksi pos</span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white/20 border border-white/30 backdrop-blur ring-1 ring-white/20">
-            <div className="flex items-center justify-between text-xs text-white font-bold">
-              <span>Total Saldo Akhir</span>
-              <Wallet className="w-4 h-4 text-white" />
+          <div className="p-3 sm:p-4 rounded-2xl bg-white/20 border border-white/30 backdrop-blur ring-1 ring-white/20">
+            <div className="flex items-center justify-between text-[11px] sm:text-xs text-white font-bold">
+              <span className="truncate">Saldo Akhir</span>
+              <Wallet className="w-4 h-4 text-white flex-shrink-0" />
             </div>
-            <div className="text-xl font-black text-white mt-1.5">
+            <div className="text-base sm:text-xl font-black text-white mt-1 truncate">
               {formatRupiah(summary.endingBalance)}
             </div>
-            <span className="text-[11px] text-slate-200">Kas bersih tersimpan</span>
+            <span className="text-[10px] sm:text-[11px] text-slate-200 truncate block">Kas bersih tersimpan</span>
           </div>
         </div>
       </div>
 
       {/* Tabs Navigation - Vibrant & Theme Infused */}
-      <div className="relative overflow-hidden flex items-center gap-2 p-2 rounded-2xl theme-gradient-banner text-white shadow-lg border border-white/20 overflow-x-auto scrollbar-none transition-all">
+      <div className="relative overflow-hidden flex items-center gap-1.5 sm:gap-2 p-1.5 sm:p-2 rounded-2xl theme-gradient-banner text-white shadow-lg border border-white/20 overflow-x-auto scrollbar-none transition-all flex-nowrap">
         <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none" />
         
         <button
           onClick={() => setActiveTab("dues_status")}
-          className={`relative z-10 px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-2 backdrop-blur-md ${
+          className={`relative z-10 px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-1.5 sm:gap-2 backdrop-blur-md flex-shrink-0 ${
             activeTab === "dues_status"
               ? "bg-amber-300 text-slate-900 shadow-md border border-amber-200 font-extrabold"
               : "bg-white/15 text-white border border-white/20 hover:bg-white/25"
           }`}
         >
-          <CheckCircle2 className="w-4 h-4" />
-          <span>Status Iuran Bulanan Warga (Lunas & Belum Bayar)</span>
+          <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
+          <span>Status Iuran Bulanan</span>
         </button>
 
         <button

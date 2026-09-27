@@ -634,30 +634,30 @@ export default function FloatingChatWidget({ isOpen, setIsOpen }) {
           </div>
         )}
 
-        {/* Main Floating Button - Highly Visible, Never Cut Off */}
+        {/* Main Floating Button - Highly Visible, Sleek & Compact on Mobile */}
         <button
           onClick={() => {
             setIsOpen(!isOpen);
             setShowTeaser(false);
           }}
-          className={`pointer-events-auto flex items-center justify-center gap-2.5 w-14 h-14 sm:w-auto sm:h-auto p-0 sm:px-4 sm:py-2.5 rounded-full theme-bg-primary text-white shadow-2xl hover:shadow-[0_12px_28px_rgba(0,0,0,0.35)] border-2 border-white/50 transition-all duration-300 transform hover:scale-105 active:scale-95 focus:outline-none cursor-pointer group`}
+          className={`pointer-events-auto flex items-center justify-center gap-2 w-11 h-11 sm:w-auto sm:h-auto p-2 sm:px-4 sm:py-2.5 rounded-full theme-bg-primary text-white shadow-2xl hover:shadow-[0_12px_28px_rgba(0,0,0,0.35)] border-2 border-white/50 transition-all duration-300 transform hover:scale-105 active:scale-95 focus:outline-none cursor-pointer group`}
           title="Buka Live Chat Warga Gang Cinta"
         >
           {isOpen ? (
-            <div className="flex items-center justify-center gap-1.5 px-3">
+            <div className="flex items-center justify-center gap-1.5 px-1 sm:px-3">
               <X className="w-5 h-5 text-white" />
               <span className="text-xs font-black tracking-wide hidden sm:inline">Tutup Chat</span>
             </div>
           ) : (
-            <div className="flex items-center gap-2.5">
-              <div className="relative flex items-center justify-center p-3 sm:p-0">
-                <MessageSquare className="w-6 h-6 sm:w-5 sm:h-5 text-white" />
-                <span className="absolute top-2 right-2 sm:-top-1 sm:-right-1 flex h-2.5 w-2.5">
+            <div className="flex items-center gap-2">
+              <div className="relative flex items-center justify-center">
+                <MessageSquare className="w-5 h-5 text-white" />
+                <span className="absolute -top-1 -right-1 flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-300 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400 border border-white"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 border border-white"></span>
                 </span>
                 {/* Mobile count indicator */}
-                <span className="sm:hidden absolute -bottom-1 -right-1 bg-slate-900/90 text-white text-[9px] font-black px-1.5 py-0.2 rounded-full border border-white/50">
+                <span className="sm:hidden absolute -bottom-2 -right-2 bg-slate-900/90 text-white text-[8px] font-black px-1.5 py-0.2 rounded-full border border-white/50">
                   {activeCount}
                 </span>
               </div>

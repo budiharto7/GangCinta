@@ -95,25 +95,25 @@ export default function StartingBalanceModal({ isOpen, onClose, currentMonthKey,
             {categories.map((cat) => {
               const isZeroOnly = cat.id === "sampah" || cat.id === "keamanan";
               return (
-                <div key={cat.id} className="p-3.5 rounded-2xl border border-slate-200 bg-slate-50 flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span className="p-2 rounded-xl bg-white shadow-2xs border border-slate-200">
+                <div key={cat.id} className="p-3 sm:p-3.5 rounded-2xl border border-slate-200 bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 transition">
+                  <div className="flex items-start sm:items-center gap-2.5 min-w-0">
+                    <span className="p-2 rounded-xl bg-white shadow-2xs border border-slate-200 flex-shrink-0 mt-0.5 sm:mt-0">
                       {getCategoryIcon(cat.id)}
                     </span>
-                    <div>
-                      <div className="font-bold text-xs text-slate-800 flex items-center gap-1.5">
-                        {cat.name}
+                    <div className="min-w-0 flex-1">
+                      <div className="font-bold text-xs text-slate-800 flex flex-wrap items-center gap-1.5">
+                        <span>{cat.name}</span>
                         {isZeroOnly && (
                           <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-200">
-                            Langsung Dibayarkan (Saldo Awal Rp 0)
+                            Saldo Awal Rp 0 (Disalurkan Rutin)
                           </span>
                         )}
                       </div>
-                      <span className="text-[10px] text-slate-400 truncate block max-w-xs">{cat.description}</span>
+                      <span className="text-[10px] text-slate-400 block mt-0.5">{cat.description}</span>
                     </div>
                   </div>
 
-                  <div className="w-44 flex-shrink-0">
+                  <div className="w-full sm:w-44 flex-shrink-0">
                     <div className="relative">
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">Rp</span>
                       <input
@@ -123,10 +123,10 @@ export default function StartingBalanceModal({ isOpen, onClose, currentMonthKey,
                         value={isZeroOnly ? 0 : (balances[cat.id] || "")}
                         onChange={(e) => !isZeroOnly && setBalances({ ...balances, [cat.id]: e.target.value })}
                         placeholder="0"
-                        className={`w-full pl-9 pr-3 py-1.5 rounded-xl border text-xs font-bold text-right transition ${
+                        className={`w-full pl-9 pr-3 py-2 rounded-xl border text-xs font-bold text-right transition ${
                           isZeroOnly
                             ? "bg-slate-100 border-slate-200 text-slate-500 cursor-not-allowed"
-                            : "bg-white border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                            : "bg-white border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none shadow-2xs"
                         }`}
                       />
                     </div>

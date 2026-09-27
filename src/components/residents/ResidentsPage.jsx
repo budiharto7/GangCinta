@@ -362,10 +362,10 @@ export default function ResidentsPage({ isRegisterOpen, setIsRegisterOpen }) {
                 {/* Accordion Header */}
                 <div
                   onClick={() => toggleExpand(fam.id)}
-                  className="p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer hover:bg-white/10 transition select-none bg-white/5"
+                  className="p-3.5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 cursor-pointer hover:bg-white/10 transition select-none bg-white/5"
                 >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-2xl flex items-center justify-center font-black text-base shadow-md flex-shrink-0 bg-white/20 backdrop-blur-md border border-white/30 text-amber-300">
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center font-black text-sm sm:text-base shadow-md flex-shrink-0 bg-white/20 backdrop-blur-md border border-white/30 text-amber-300">
                       {getCleanHouseNumber(fam.houseNumber, fam.address)}
                     </div>
                     <div>

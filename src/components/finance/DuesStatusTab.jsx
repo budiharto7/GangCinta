@@ -177,51 +177,51 @@ Terima kasih banyak atas perhatian dan partisipasinya dalam menjaga lingkungan G
   return (
     <div className="space-y-6">
 
-      {/* Summary Cards - Glassmorphic & Colorful */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Summary Cards - Proportional 2x2 on Mobile, 4 Cols on Desktop */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
         
-        <div className="p-5 rounded-3xl bg-white/15 backdrop-blur-md border border-white/20 shadow-md flex items-center gap-4 text-white theme-gradient-banner">
-          <div className="w-12 h-12 rounded-2xl bg-white/20 border border-white/30 text-amber-300 flex items-center justify-center font-bold text-xl flex-shrink-0">
-            <Users className="w-6 h-6" />
+        <div className="p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl bg-white/15 backdrop-blur-md border border-white/20 shadow-md flex items-center gap-2.5 sm:gap-4 text-white theme-gradient-banner">
+          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-white/20 border border-white/30 text-amber-300 flex items-center justify-center font-bold text-lg sm:text-xl flex-shrink-0">
+            <Users className="w-4 h-4 sm:w-6 sm:h-6" />
           </div>
-          <div>
-            <div className="text-xs font-bold text-white/80">Total KK Warga</div>
-            <div className="text-2xl font-black text-white">{totalCount} KK</div>
-            <div className="text-[11px] text-white/70">Target Kas: {formatRupiah(targetTotalAmount)}</div>
-          </div>
-        </div>
-
-        <div className="p-5 rounded-3xl bg-emerald-500/25 backdrop-blur-md border border-emerald-300/30 shadow-md flex items-center gap-4 text-white theme-gradient-banner">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-400/30 border border-emerald-300/40 text-emerald-200 flex items-center justify-center font-bold text-xl flex-shrink-0">
-            <UserCheck className="w-6 h-6" />
-          </div>
-          <div>
-            <div className="text-xs font-bold text-emerald-200">Sudah Bayar (Lunas)</div>
-            <div className="text-2xl font-black text-emerald-200">{paidCount} KK</div>
-            <div className="text-[11px] font-semibold text-emerald-200/90">Terkumpul: {formatRupiah(paidTotalAmount)}</div>
+          <div className="min-w-0">
+            <div className="text-[11px] sm:text-xs font-bold text-white/80 truncate">Total KK Warga</div>
+            <div className="text-lg sm:text-2xl font-black text-white">{totalCount} KK</div>
+            <div className="text-[10px] sm:text-[11px] text-white/70 truncate">Target: {formatRupiah(targetTotalAmount)}</div>
           </div>
         </div>
 
-        <div className="p-5 rounded-3xl bg-rose-500/25 backdrop-blur-md border border-rose-300/30 shadow-md flex items-center gap-4 text-white theme-gradient-banner">
-          <div className="w-12 h-12 rounded-2xl bg-rose-400/30 border border-rose-300/40 text-rose-200 flex items-center justify-center font-bold text-xl flex-shrink-0">
-            <UserX className="w-6 h-6" />
+        <div className="p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl bg-emerald-500/25 backdrop-blur-md border border-emerald-300/30 shadow-md flex items-center gap-2.5 sm:gap-4 text-white theme-gradient-banner">
+          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-emerald-400/30 border border-emerald-300/40 text-emerald-200 flex items-center justify-center font-bold text-lg sm:text-xl flex-shrink-0">
+            <UserCheck className="w-4 h-4 sm:w-6 sm:h-6" />
           </div>
-          <div>
-            <div className="text-xs font-bold text-rose-200">Belum Bayar</div>
-            <div className="text-2xl font-black text-rose-200">{unpaidCount} KK</div>
-            <div className="text-[11px] font-semibold text-rose-200/90">Tunggakan: {formatRupiah(unpaidTotalAmount)}</div>
+          <div className="min-w-0">
+            <div className="text-[11px] sm:text-xs font-bold text-emerald-200 truncate">Sudah Bayar</div>
+            <div className="text-lg sm:text-2xl font-black text-emerald-200">{paidCount} KK</div>
+            <div className="text-[10px] sm:text-[11px] font-semibold text-emerald-200/90 truncate">{formatRupiah(paidTotalAmount)}</div>
           </div>
         </div>
 
-        <div className="p-5 rounded-3xl bg-amber-500/25 backdrop-blur-md border border-amber-300/30 shadow-md flex items-center justify-center text-center text-white theme-gradient-banner">
-          <div className="space-y-1 w-full">
-            <div className="text-xs font-bold text-amber-200 flex items-center justify-center gap-1">
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" /> Presentase Pelunasan
+        <div className="p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl bg-rose-500/25 backdrop-blur-md border border-rose-300/30 shadow-md flex items-center gap-2.5 sm:gap-4 text-white theme-gradient-banner">
+          <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-rose-400/30 border border-rose-300/40 text-rose-200 flex items-center justify-center font-bold text-lg sm:text-xl flex-shrink-0">
+            <UserX className="w-4 h-4 sm:w-6 sm:h-6" />
+          </div>
+          <div className="min-w-0">
+            <div className="text-[11px] sm:text-xs font-bold text-rose-200 truncate">Belum Bayar</div>
+            <div className="text-lg sm:text-2xl font-black text-rose-200">{unpaidCount} KK</div>
+            <div className="text-[10px] sm:text-[11px] font-semibold text-rose-200/90 truncate">{formatRupiah(unpaidTotalAmount)}</div>
+          </div>
+        </div>
+
+        <div className="p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl bg-amber-500/25 backdrop-blur-md border border-amber-300/30 shadow-md flex items-center justify-center text-center text-white theme-gradient-banner">
+          <div className="space-y-0.5 sm:space-y-1 w-full">
+            <div className="text-[11px] sm:text-xs font-bold text-amber-200 flex items-center justify-center gap-1">
+              <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300" /> Pelunasan
             </div>
-            <div className="text-3xl font-black text-amber-200">
+            <div className="text-xl sm:text-3xl font-black text-amber-200">
               {totalCount > 0 ? Math.round((paidCount / totalCount) * 100) : 0}%
             </div>
-            <div className="w-full bg-white/20 h-2 rounded-full overflow-hidden mt-1.5 border border-white/20">
+            <div className="w-full bg-white/20 h-1.5 sm:h-2 rounded-full overflow-hidden mt-1 border border-white/20">
               <div 
                 className="bg-amber-300 h-full rounded-full transition-all duration-500 shadow-sm" 
                 style={{ width: `${totalCount > 0 ? (paidCount / totalCount) * 100 : 0}%` }}

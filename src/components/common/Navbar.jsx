@@ -95,11 +95,11 @@ export default function Navbar({
       className={`fixed top-0 left-0 right-0 z-50 w-full transition-colors duration-300 select-none shadow-md backdrop-blur-md ${headerBgClass}`}
       style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 50 }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-18">
           
           {/* Brand & Community Logo */}
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 min-w-0">
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-1.5 sm:p-2 rounded-lg text-white hover:bg-white/20 flex-shrink-0 transition cursor-pointer"

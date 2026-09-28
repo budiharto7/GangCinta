@@ -473,17 +473,17 @@ export default function ResidentsPage({ isRegisterOpen, setIsRegisterOpen }) {
 
                 {/* Expanded Section */}
                 {isExpanded && (
-                  <div className="p-6 bg-white/10 backdrop-blur-md border-t border-white/20 space-y-4 animate-fade-in text-white">
+                  <div className="p-3.5 sm:p-6 bg-white/10 backdrop-blur-md border-t border-white/20 space-y-3 sm:space-y-4 animate-fade-in text-white">
                     
                     {/* IF NOT KETUA GANG & NOT OWNER: SHOW LOCKED NOTICE AND DO NOT SHOW MEMBERS TABLE */}
                     {!canViewFullKK ? (
-                      <div className="p-5 rounded-2xl bg-amber-500/20 backdrop-blur-md border border-amber-300/30 text-white text-xs flex items-center gap-3 shadow-sm">
+                      <div className="p-3.5 sm:p-5 rounded-xl sm:rounded-2xl bg-amber-500/20 backdrop-blur-md border border-amber-300/30 text-white text-xs flex items-center gap-3 shadow-sm">
                         <Lock className="w-5 h-5 text-amber-300 flex-shrink-0" />
                         <div>
                           <p className="font-extrabold text-sm text-white">
                             Akses Rincian KK Dilindungi Privasi
                           </p>
-                          <p className="mt-0.5 text-white/90 leading-relaxed">
+                          <p className="mt-0.5 text-white/90 leading-relaxed text-[11px] sm:text-xs">
                             Tabel rincian susunan anggota keluarga, NIK, dan tanggal lahir <strong>hanya dapat dilihat oleh Ketua Gang ({adminName})</strong> dan pemilik KK. Selain Ketua Gang hanya dapat melihat Nama Kepala Rumah Tangga (<strong>{fam.headOfFamily}</strong>) dan Nomor Rumah (<strong>{formatCleanHouseLocation(fam.houseNumber, fam.address, fam.block)}</strong>).
                           </p>
                         </div>
@@ -491,22 +491,62 @@ export default function ResidentsPage({ isRegisterOpen, setIsRegisterOpen }) {
                     ) : (
                       /* ONLY KETUA GANG & OWNER CAN SEE THIS TABLE (SUSUNAN ANGGOTA KELUARGA) */
                       <>
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-xs font-extrabold uppercase text-white/90 tracking-wider">
+                        <div className="flex items-center justify-between gap-2">
+                          <h4 className="text-[11px] sm:text-xs font-extrabold uppercase text-white/90 tracking-wider truncate">
                             SUSUNAN ANGGOTA KELUARGA (KK: {fam.kkNumber})
                           </h4>
                           
                           {canEdit && (
                             <button
                               onClick={() => setEditModalFamily(fam)}
-                              className="text-xs font-bold text-white bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-xl border border-white/30 backdrop-blur-md shadow-2xs cursor-pointer"
+                              className="text-[11px] sm:text-xs font-bold text-white bg-white/20 hover:bg-white/30 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl border border-white/30 backdrop-blur-md shadow-2xs cursor-pointer flex-shrink-0"
                             >
-                              + Tambah / Edit Data Anggota
+                              + Edit KK / Anggota
                             </button>
                           )}
                         </div>
 
-                        <div className="overflow-x-auto rounded-2xl border border-white/20 bg-black/20 backdrop-blur-md shadow-inner">
+                        {/* Mobile Cards for Members in Accordion */}
+                        <div className="sm:hidden space-y-2">
+                          {(fam.members || []).map((m, idx) => (
+                            <div key={m?.id || idx} className="bg-white/10 backdrop-blur-md p-2.5 rounded-xl border border-white/20 space-y-1.5">
+                              <div className="flex items-start justify-between gap-1.5">
+                                <div className="min-w-0">
+                                  <div className="font-extrabold text-white text-xs truncate">{m?.fullName || "-"}</div>
+                                  <div className="text-[10px] text-white/70 font-mono">NIK: {m?.nik || "-"}</div>
+                                </div>
+                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold border flex-shrink-0 ${
+                                  m?.relation === "Kepala Keluarga"
+                                    ? "bg-emerald-500/30 text-emerald-200 border-emerald-300/40"
+                                    : "bg-white/20 text-white border-white/30"
+                                }`}>
+                                  {m?.relation || "-"}
+                                </span>
+                              </div>
+                              <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-[10px] text-white/80 border-t border-white/10 pt-1">
+                                <div><span className="text-white/50">JK:</span> {m?.gender || "-"}</div>
+                                <div><span className="text-white/50">Goldar:</span> <strong className="text-amber-300">{m?.bloodType || "-"}</strong></div>
+                                <div className="col-span-2 truncate"><span className="text-white/50">Lahir:</span> {m?.birthPlace ? `${m.birthPlace}, ` : ""}{m?.birthDate || "-"}</div>
+                                <div className="col-span-2 truncate"><span className="text-white/50">Kerja:</span> {m?.job || "-"}</div>
+                              </div>
+                              {canEdit && (
+                                <div className="flex justify-end pt-1 border-t border-white/10">
+                                  <button
+                                    type="button"
+                                    onClick={(e) => handleDeleteMember(fam.id, m, e)}
+                                    className="px-2.5 py-1 rounded-lg bg-rose-500/30 hover:bg-rose-500/50 text-rose-200 border border-rose-400/40 text-[10px] font-bold flex items-center gap-1 transition active:scale-95 cursor-pointer"
+                                  >
+                                    <Trash2 className="w-3 h-3 text-rose-200" />
+                                    <span>Hapus Anggota</span>
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Desktop Members Table */}
+                        <div className="hidden sm:block overflow-x-auto rounded-2xl border border-white/20 bg-black/20 backdrop-blur-md shadow-inner">
                           <table className="w-full text-left text-xs">
                             <thead className="bg-white/20 text-white font-extrabold border-b border-white/20">
                               <tr>

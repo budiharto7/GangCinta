@@ -193,26 +193,26 @@ export default function Dashboard({
       <GangCintaLogo variant="watermark" size="watermark" />
 
       {/* Welcome & Role Banner */}
-      <div className="relative overflow-hidden rounded-3xl theme-gradient-banner text-white p-6 sm:p-8 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl theme-gradient-banner text-white p-4 sm:p-8 shadow-xl">
         <div className="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute -right-6 -bottom-6 opacity-20 pointer-events-none z-0 hidden sm:block">
           <GangCintaLogo size="xl" variant="plain" />
         </div>
 
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-3.5">
-            <div className="flex items-center gap-2.5 flex-wrap">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
+          <div className="space-y-2.5 sm:space-y-3.5">
+            <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
               <GangCintaLogo size="sm" variant="badge" />
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold text-white shadow-2xs">
-                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[11px] sm:text-xs font-bold text-white shadow-2xs">
+                <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300" />
                 Gang Cinta • Perumahan Bumi Nagara Lestari
               </div>
-              <span className="text-xs px-3.5 py-1.5 rounded-full bg-white/15 font-extrabold text-white border border-white/20 backdrop-blur-md shadow-2xs">
+              <span className="text-[11px] sm:text-xs px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/15 font-extrabold text-white border border-white/20 backdrop-blur-md shadow-2xs">
                 RT 028 RW 005
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow-xs">
+            <h1 className="text-xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow-xs">
               {user ? `Selamat Datang, ${user.name}` : "Portal Warga Gang Cinta - Bumi Nagara Lestari"}
             </h1>
             <div className="text-slate-200 text-xs sm:text-sm max-w-3xl leading-relaxed opacity-95">
@@ -286,22 +286,22 @@ export default function Dashboard({
             </div>
           </div>
 
-          {/* Action Buttons (Pill-shaped as in screenshot) */}
-          <div className="flex flex-wrap items-center gap-2.5">
+          {/* Action Buttons (Pill-shaped, responsive flex-wrap) */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
             {user?.role === "admin" && (
               <>
                 <button
                   onClick={onOpenUploadMoment}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-xs transition shadow-lg hover:bg-slate-100 active:scale-95"
+                  className="flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs transition shadow-lg hover:bg-slate-100 active:scale-95 cursor-pointer"
                 >
-                  <Camera className="w-4 h-4 text-slate-800" />
+                  <Camera className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-800" />
                   Upload Foto Acara
                 </button>
                 <button
                   onClick={onOpenRegisterKK}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/15 hover:bg-white/25 text-white text-xs font-bold backdrop-blur transition border border-white/25 active:scale-95 shadow-2xs"
+                  className="flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white/15 hover:bg-white/25 text-white text-[11px] sm:text-xs font-bold backdrop-blur transition border border-white/25 active:scale-95 shadow-2xs cursor-pointer"
                 >
-                  <UserPlus className="w-4 h-4" />
+                  <UserPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   Daftarkan KK Baru
                 </button>
               </>
@@ -311,16 +311,16 @@ export default function Dashboard({
               <>
                 <button
                   onClick={onOpenNewTransaction}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-xs transition shadow-lg hover:bg-slate-100 active:scale-95"
+                  className="flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs transition shadow-lg hover:bg-slate-100 active:scale-95 cursor-pointer"
                 >
-                  <PlusCircle className="w-4 h-4 text-slate-800" />
+                  <PlusCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-800" />
                   Catat Transaksi Kas
                 </button>
                 <button
                   onClick={() => setActiveTab("finance")}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/15 hover:bg-white/25 text-white text-xs font-bold backdrop-blur transition border border-white/25 active:scale-95 shadow-2xs"
+                  className="flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white/15 hover:bg-white/25 text-white text-[11px] sm:text-xs font-bold backdrop-blur transition border border-white/25 active:scale-95 shadow-2xs cursor-pointer"
                 >
-                  <CalendarIcon className="w-4 h-4" />
+                  <CalendarIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   Kalender Kas
                 </button>
               </>
@@ -330,16 +330,16 @@ export default function Dashboard({
               <>
                 <button
                   onClick={() => setActiveTab("residents")}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white text-slate-900 font-extrabold text-xs transition shadow-lg hover:bg-slate-100 active:scale-95"
+                  className="flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs transition shadow-lg hover:bg-slate-100 active:scale-95 cursor-pointer"
                 >
-                  <Users className="w-4 h-4 text-slate-800" />
+                  <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-800" />
                   Isi Data KK Saya
                 </button>
                 <button
                   onClick={() => setActiveTab("guests")}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/20 hover:bg-white/30 text-white text-xs font-bold backdrop-blur transition border border-white/30 active:scale-95 shadow-2xs"
+                  className="flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-white/20 hover:bg-white/30 text-white text-[11px] sm:text-xs font-bold backdrop-blur transition border border-white/30 active:scale-95 shadow-2xs cursor-pointer"
                 >
-                  <UserPlus className="w-4 h-4" />
+                  <UserPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   Lapor Tamu Menginap
                 </button>
               </>
@@ -349,16 +349,16 @@ export default function Dashboard({
               <>
                 <button
                   onClick={() => requireAuth(() => {}, "Masuk Akun Warga")}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-slate-900 font-extrabold text-xs transition shadow-lg hover:bg-slate-100 active:scale-95"
+                  className="flex items-center gap-1.5 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs transition shadow-lg hover:bg-slate-100 active:scale-95 cursor-pointer"
                 >
-                  <LogIn className="w-4 h-4 text-slate-800" />
+                  <LogIn className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-800" />
                   Masuk Akun Warga
                 </button>
                 <button
                   onClick={() => setActiveTab("finance")}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/20 hover:bg-white/30 text-white text-xs font-bold backdrop-blur transition border border-white/30 active:scale-95 shadow-2xs"
+                  className="flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-white/20 hover:bg-white/30 text-white text-[11px] sm:text-xs font-bold backdrop-blur transition border border-white/30 active:scale-95 shadow-2xs cursor-pointer"
                 >
-                  <Wallet className="w-4 h-4" />
+                  <Wallet className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   Transparansi Kas 5 Pos
                 </button>
               </>
@@ -371,94 +371,94 @@ export default function Dashboard({
       <OnlineResidents />
 
       {/* 4 Quick Stat Cards - Rich Colorful Gradients */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
         
         {/* Card 1: Total KK */}
         <div 
           onClick={() => setActiveTab("residents")}
-          className="relative overflow-hidden p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-600 via-teal-600 to-emerald-800 text-white shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 cursor-pointer group"
+          className="relative overflow-hidden p-3 sm:p-5 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-emerald-600 via-teal-600 to-emerald-800 text-white shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 cursor-pointer group"
         >
           <div className="absolute top-0 right-0 -mt-6 -mr-6 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
           <div className="relative z-10 flex items-center justify-between">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white group-hover:scale-110 transition shadow-xs">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white group-hover:scale-110 transition shadow-xs">
               <Home className="w-4 h-4 sm:w-5 sm:h-5 text-amber-300" />
             </div>
-            <span className="text-[10px] sm:text-xs font-extrabold bg-white/20 backdrop-blur-md text-white border border-white/30 px-2.5 py-0.5 rounded-full shadow-2xs">
+            <span className="text-[9px] sm:text-xs font-extrabold bg-white/20 backdrop-blur-md text-white border border-white/30 px-2 py-0.5 sm:px-2.5 sm:py-0.5 rounded-full shadow-2xs">
               RT 028
             </span>
           </div>
-          <div className="relative z-10 mt-3 sm:mt-4">
-            <div className="text-xl sm:text-2xl font-black text-white drop-shadow-xs">{families.length} KK</div>
-            <p className="text-[11px] sm:text-xs text-emerald-100 opacity-95 mt-0.5 truncate">Kepala Keluarga</p>
+          <div className="relative z-10 mt-2.5 sm:mt-4">
+            <div className="text-lg sm:text-2xl font-black text-white drop-shadow-xs">{families.length} KK</div>
+            <p className="text-[10px] sm:text-xs text-emerald-100 opacity-95 mt-0.5 truncate">Kepala Keluarga</p>
           </div>
         </div>
 
         {/* Card 2: Total Jiwa */}
         <div 
           onClick={() => setActiveTab("residents")}
-          className="relative overflow-hidden p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-blue-600 via-indigo-600 to-blue-800 text-white shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 cursor-pointer group"
+          className="relative overflow-hidden p-3 sm:p-5 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-blue-600 via-indigo-600 to-blue-800 text-white shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 cursor-pointer group"
         >
           <div className="absolute top-0 right-0 -mt-6 -mr-6 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
           <div className="relative z-10 flex items-center justify-between">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white group-hover:scale-110 transition shadow-xs">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white group-hover:scale-110 transition shadow-xs">
               <Users className="w-4 h-4 sm:w-5 sm:h-5 text-amber-300" />
             </div>
-            <span className="text-[10px] sm:text-xs font-extrabold bg-white/20 backdrop-blur-md text-white border border-white/30 px-2.5 py-0.5 rounded-full shadow-2xs">
+            <span className="text-[9px] sm:text-xs font-extrabold bg-white/20 backdrop-blur-md text-white border border-white/30 px-2 py-0.5 sm:px-2.5 sm:py-0.5 rounded-full shadow-2xs">
               Penduduk
             </span>
           </div>
-          <div className="relative z-10 mt-3 sm:mt-4">
-            <div className="text-xl sm:text-2xl font-black text-white drop-shadow-xs">{totalCitizens} Jiwa</div>
-            <p className="text-[11px] sm:text-xs text-blue-100 opacity-95 mt-0.5 truncate">{families.length} KK • {totalCitizens} Jiwa Terdaftar</p>
+          <div className="relative z-10 mt-2.5 sm:mt-4">
+            <div className="text-lg sm:text-2xl font-black text-white drop-shadow-xs">{totalCitizens} Jiwa</div>
+            <p className="text-[10px] sm:text-xs text-blue-100 opacity-95 mt-0.5 truncate">{families.length} KK • {totalCitizens} Jiwa Terdaftar</p>
           </div>
         </div>
 
         {/* Card 3: Saldo Kas */}
         <div 
           onClick={() => setActiveTab("finance")}
-          className="relative overflow-hidden p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-500 via-orange-600 to-amber-700 text-white shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 cursor-pointer group"
+          className="relative overflow-hidden p-3 sm:p-5 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-amber-500 via-orange-600 to-amber-700 text-white shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 cursor-pointer group"
         >
           <div className="absolute top-0 right-0 -mt-6 -mr-6 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
           <div className="relative z-10 flex items-center justify-between">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white group-hover:scale-110 transition shadow-xs">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white group-hover:scale-110 transition shadow-xs">
               <Wallet className="w-4 h-4 sm:w-5 sm:h-5 text-amber-200" />
             </div>
-            <span className="text-[10px] sm:text-xs font-extrabold bg-white/20 backdrop-blur-md text-white border border-white/30 px-2.5 py-0.5 rounded-full shadow-2xs">
+            <span className="text-[9px] sm:text-xs font-extrabold bg-white/20 backdrop-blur-md text-white border border-white/30 px-2 py-0.5 sm:px-2.5 sm:py-0.5 rounded-full shadow-2xs">
               Kas Bersih
             </span>
           </div>
-          <div className="relative z-10 mt-3 sm:mt-4">
-            <div className="text-base sm:text-xl font-black text-white drop-shadow-xs truncate">
+          <div className="relative z-10 mt-2.5 sm:mt-4">
+            <div className="text-sm sm:text-xl font-black text-white drop-shadow-xs truncate">
               {formatRupiah(summary.endingBalance)}
             </div>
-            <p className="text-[11px] sm:text-xs text-amber-100 opacity-95 mt-0.5 truncate">Saldo Akhir Sept 2026</p>
+            <p className="text-[10px] sm:text-xs text-amber-100 opacity-95 mt-0.5 truncate">Saldo Akhir Kas</p>
           </div>
         </div>
 
         {/* Card 4: Momen Acara */}
         <div 
           onClick={() => setActiveTab("moments")}
-          className="relative overflow-hidden p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-rose-600 via-pink-600 to-purple-700 text-white shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 cursor-pointer group"
+          className="relative overflow-hidden p-3 sm:p-5 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-rose-600 via-pink-600 to-purple-700 text-white shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 cursor-pointer group"
         >
           <div className="absolute top-0 right-0 -mt-6 -mr-6 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
           <div className="relative z-10 flex items-center justify-between">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white group-hover:scale-110 transition shadow-xs">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white group-hover:scale-110 transition shadow-xs">
               <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-amber-300" />
             </div>
-            <span className="text-[10px] sm:text-xs font-extrabold bg-white/20 backdrop-blur-md text-white border border-white/30 px-2.5 py-0.5 rounded-full shadow-2xs">
+            <span className="text-[9px] sm:text-xs font-extrabold bg-white/20 backdrop-blur-md text-white border border-white/30 px-2 py-0.5 sm:px-2.5 sm:py-0.5 rounded-full shadow-2xs">
               Foto Acara
             </span>
           </div>
-          <div className="relative z-10 mt-3 sm:mt-4">
-            <div className="text-xl sm:text-2xl font-black text-white drop-shadow-xs">{moments.length} Acara</div>
-            <p className="text-[11px] sm:text-xs text-rose-100 opacity-95 mt-0.5 truncate">Momen Kegiatan</p>
+          <div className="relative z-10 mt-2.5 sm:mt-4">
+            <div className="text-lg sm:text-2xl font-black text-white drop-shadow-xs">{moments.length} Acara</div>
+            <p className="text-[10px] sm:text-xs text-rose-100 opacity-95 mt-0.5 truncate">Momen Kegiatan</p>
           </div>
         </div>
 
       </div>
 
       {/* SECTION: Transparansi Keuangan Kas Lengkap (Saldo Awal, Masuk, Keluar, Saldo Akhir 5 Pos) */}
-      <div className="relative overflow-hidden rounded-3xl theme-gradient-banner text-white p-5 sm:p-7 shadow-xl space-y-6 transition-all">
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl theme-gradient-banner text-white p-3.5 sm:p-7 shadow-xl space-y-4 sm:space-y-6 transition-all">
         {/* Glowing Background Orbs & Translucent Watermark Logo */}
         <div className="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-10 -left-10 w-56 h-56 bg-amber-400/20 rounded-full blur-2xl pointer-events-none" />
@@ -466,72 +466,72 @@ export default function Dashboard({
           <GangCintaLogo size="xl" />
         </div>
 
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/20 pb-5">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-white/20 pb-4 sm:pb-5">
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="w-3.5 h-3.5 rounded-full bg-amber-300 shadow-sm animate-pulse"></span>
-              <h2 className="text-base sm:text-lg font-extrabold text-white tracking-tight">
+              <span className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-amber-300 shadow-sm animate-pulse"></span>
+              <h2 className="text-sm sm:text-lg font-extrabold text-white tracking-tight">
                 Transparansi Pembukuan Kas Gang Cinta - Perumahan Bumi Nagara Lestari (RT 028 RW 005)
               </h2>
             </div>
-            <p className="text-xs text-white/80 mt-1">
+            <p className="text-[11px] sm:text-xs text-white/80 mt-1">
               Transparansi saldo awal dan pengeluaran tiap pos agar seluruh warga dapat memantau kas lingkungan secara terbuka.
             </p>
           </div>
 
           <button
             onClick={() => setActiveTab("finance")}
-            className="inline-flex items-center gap-1.5 text-xs font-extrabold text-white bg-white/20 hover:bg-white/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/30 transition shadow-sm self-start sm:self-auto active:scale-95"
+            className="inline-flex items-center gap-1.5 text-xs font-extrabold text-white bg-white/20 hover:bg-white/30 backdrop-blur-md px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full border border-white/30 transition shadow-sm self-start sm:self-auto active:scale-95"
           >
             <span>Buka Kalender & Detail Kas</span>
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
         </div>
 
-        {/* 4 Summary Balances Grid - Theme Infused & Glassmorphic */}
-        <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-5 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 shadow-md flex flex-col justify-between min-h-[115px] space-y-2">
+        {/* 4 Summary Balances Grid - Responsive 2x2 on Mobile, 4 on Laptop */}
+        <div className="relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+          <div className="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 shadow-md flex flex-col justify-between min-h-[85px] sm:min-h-[115px] space-y-1 sm:space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-extrabold text-white/90 uppercase tracking-wider">Total Saldo Awal</span>
-              <Wallet className="w-4 h-4 text-amber-300 flex-shrink-0" />
+              <span className="text-[10px] sm:text-xs font-extrabold text-white/90 uppercase tracking-wider truncate">Total Saldo Awal</span>
+              <Wallet className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 flex-shrink-0" />
             </div>
-            <div className="text-lg sm:text-xl font-black text-white my-1 tabular-nums tracking-tight">
+            <div className="text-sm sm:text-xl font-black text-white my-0.5 sm:my-1 tabular-nums tracking-tight truncate">
               {formatRupiah(summary.startingBalance)}
             </div>
-            <span className="text-[11px] text-white/70 font-medium">Total awal 5 pos per 1 Sept</span>
+            <span className="text-[9px] sm:text-[11px] text-white/70 font-medium truncate block">Total awal 5 pos per 1 Sept</span>
           </div>
 
-          <div className="p-5 rounded-2xl bg-emerald-500/25 backdrop-blur-md border border-emerald-300/30 shadow-md flex flex-col justify-between min-h-[115px] space-y-2">
+          <div className="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-emerald-500/25 backdrop-blur-md border border-emerald-300/30 shadow-md flex flex-col justify-between min-h-[85px] sm:min-h-[115px] space-y-1 sm:space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-extrabold text-emerald-200 uppercase tracking-wider">Total Pemasukan</span>
-              <ArrowUpRight className="w-4 h-4 text-emerald-300 flex-shrink-0" />
+              <span className="text-[10px] sm:text-xs font-extrabold text-emerald-200 uppercase tracking-wider truncate">Total Pemasukan</span>
+              <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-300 flex-shrink-0" />
             </div>
-            <div className="text-lg sm:text-xl font-black text-emerald-200 my-1 tabular-nums tracking-tight">
+            <div className="text-sm sm:text-xl font-black text-emerald-200 my-0.5 sm:my-1 tabular-nums tracking-tight truncate">
               {formatRupiah(summary.totalIncome, "+")}
             </div>
-            <span className="text-[11px] text-emerald-200/90 font-bold">Iuran rutin 25 KK & kas</span>
+            <span className="text-[9px] sm:text-[11px] text-emerald-200/90 font-bold truncate block">Iuran rutin 25 KK & kas</span>
           </div>
 
-          <div className="p-5 rounded-2xl bg-rose-500/25 backdrop-blur-md border border-rose-300/30 shadow-md flex flex-col justify-between min-h-[115px] space-y-2">
+          <div className="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-rose-500/25 backdrop-blur-md border border-rose-300/30 shadow-md flex flex-col justify-between min-h-[85px] sm:min-h-[115px] space-y-1 sm:space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-extrabold text-rose-200 uppercase tracking-wider">Total Pengeluaran</span>
-              <ArrowDownRight className="w-4 h-4 text-rose-300 flex-shrink-0" />
+              <span className="text-[10px] sm:text-xs font-extrabold text-rose-200 uppercase tracking-wider truncate">Total Pengeluaran</span>
+              <ArrowDownRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-rose-300 flex-shrink-0" />
             </div>
-            <div className="text-lg sm:text-xl font-black text-rose-200 my-1 tabular-nums tracking-tight">
+            <div className="text-sm sm:text-xl font-black text-rose-200 my-0.5 sm:my-1 tabular-nums tracking-tight truncate">
               {formatRupiah(summary.totalExpense, "-")}
             </div>
-            <span className="text-[11px] text-rose-200/90 font-bold">{summary.expenseList.length} transaksi peruntukan</span>
+            <span className="text-[9px] sm:text-[11px] text-rose-200/90 font-bold truncate block">{summary.expenseList.length} transaksi peruntukan</span>
           </div>
 
-          <div className="p-5 rounded-2xl bg-amber-500/25 backdrop-blur-md border border-amber-300/30 shadow-md flex flex-col justify-between min-h-[115px] space-y-2">
+          <div className="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-amber-500/25 backdrop-blur-md border border-amber-300/30 shadow-md flex flex-col justify-between min-h-[85px] sm:min-h-[115px] space-y-1 sm:space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-extrabold text-amber-200 uppercase tracking-wider">Total Saldo Akhir</span>
-              <Sparkles className="w-4 h-4 text-amber-300 flex-shrink-0" />
+              <span className="text-[10px] sm:text-xs font-extrabold text-amber-200 uppercase tracking-wider truncate">Total Saldo Akhir</span>
+              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 flex-shrink-0" />
             </div>
-            <div className="text-lg sm:text-xl font-black text-amber-200 my-1 tabular-nums tracking-tight">
+            <div className="text-sm sm:text-xl font-black text-amber-200 my-0.5 sm:my-1 tabular-nums tracking-tight truncate">
               {formatRupiah(summary.endingBalance)}
             </div>
-            <span className="text-[11px] text-amber-200/90 font-extrabold">Kas bersih per hari ini</span>
+            <span className="text-[9px] sm:text-[11px] text-amber-200/90 font-extrabold truncate block">Kas bersih per hari ini</span>
           </div>
         </div>
 

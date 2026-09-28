@@ -198,7 +198,7 @@ export default function ResidentsPage({ isRegisterOpen, setIsRegisterOpen }) {
               RT 028 RW 005
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow-xs">
+          <h1 className="text-xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow-xs">
             Data Warga Blok F4 & F6 Gang Cinta
           </h1>
           <p className="text-xs sm:text-sm text-slate-200 leading-relaxed opacity-95">
@@ -206,13 +206,13 @@ export default function ResidentsPage({ isRegisterOpen, setIsRegisterOpen }) {
           </p>
         </div>
 
-        <div className="relative z-10 flex flex-wrap items-center gap-2.5 sm:gap-3">
+        <div className="relative z-10 flex flex-wrap items-center gap-2 sm:gap-2.5">
           {user?.role === "admin" && (
             <button
               onClick={() => setIsRegisterOpen(true)}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full font-extrabold text-xs bg-white text-slate-900 shadow-lg hover:bg-slate-100 transition transform active:scale-95 cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full font-extrabold text-[11px] sm:text-xs bg-white text-slate-900 shadow-lg hover:bg-slate-100 transition transform active:scale-95 cursor-pointer"
             >
-              <UserPlus className="w-4 h-4 text-emerald-600" />
+              <UserPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
               Daftarkan KK Baru
             </button>
           )}
@@ -220,14 +220,14 @@ export default function ResidentsPage({ isRegisterOpen, setIsRegisterOpen }) {
           {user?.role === "anggota" && myFamily && (
             <button
               onClick={() => setEditModalFamily(myFamily)}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full font-extrabold text-xs bg-white text-slate-900 shadow-lg hover:bg-slate-100 transition transform active:scale-95 cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full font-extrabold text-[11px] sm:text-xs bg-white text-slate-900 shadow-lg hover:bg-slate-100 transition transform active:scale-95 cursor-pointer"
             >
-              <Edit3 className="w-4 h-4 text-emerald-600" />
+              <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
               Lengkapi / Edit KK Saya
             </button>
           )}
 
-          <div className="flex items-center gap-3 text-xs bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
+          <div className="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-xs bg-white/10 backdrop-blur-md px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/20">
             <div className="flex items-center gap-1.5">
               <Home className="w-3.5 h-3.5 text-amber-300" />
               <span className="font-extrabold text-white">{families.length} KK</span>

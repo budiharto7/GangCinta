@@ -265,7 +265,7 @@ export default function GuestReportsPage({ isReportOpen, setIsReportOpen }) {
             ) : (
               <>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow-xs">
+                  <h1 className="text-xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow-xs">
                     {guestHeaderConfig.title || "Pelaporan Tamu & Keluarga Menginap"}
                   </h1>
                   {isKetuaGang && (
@@ -294,12 +294,12 @@ export default function GuestReportsPage({ isReportOpen, setIsReportOpen }) {
             )}
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
             <button
               onClick={() => setIsReportOpen(true)}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-xs transition shadow-lg hover:bg-slate-100 active:scale-95 cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs transition shadow-lg hover:bg-slate-100 active:scale-95 cursor-pointer"
             >
-              <UserPlus className="w-4 h-4 text-emerald-600" />
+              <UserPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
               Lapor Tamu / Keluarga Baru
             </button>
           </div>
@@ -513,30 +513,30 @@ export default function GuestReportsPage({ isReportOpen, setIsReportOpen }) {
                   </div>
                 </div>
 
-                {/* Identity & Details Grid - Mobile-Friendly 1 col on mobile, 2 sm, 4 lg */}
-                <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-3.5 sm:p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-xs shadow-inner">
-                  <div>
-                    <span className="text-white/70 font-semibold block text-[11px]">NIK Tamu:</span>
-                    <span className="font-mono font-bold text-white break-all">{report.guestNik}</span>
-                  </div>
+        {/* Identity & Details Grid - Mobile-Friendly 2 cols on mobile, 4 on lg */}
+        <div className="relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-xs shadow-inner">
+          <div>
+            <span className="text-white/70 font-semibold block text-[10px] sm:text-[11px]">NIK Tamu:</span>
+            <span className="font-mono font-bold text-white break-all text-[11px] sm:text-xs">{report.guestNik}</span>
+          </div>
 
-                  <div>
-                    <span className="text-white/70 font-semibold block text-[11px]">Nomor KK Tamu:</span>
-                    <span className="font-mono font-bold text-white break-all">{report.guestKkNumber || "-"}</span>
-                  </div>
+          <div>
+            <span className="text-white/70 font-semibold block text-[10px] sm:text-[11px]">Nomor KK Tamu:</span>
+            <span className="font-mono font-bold text-white break-all text-[11px] sm:text-xs">{report.guestKkNumber || "-"}</span>
+          </div>
 
-                  <div>
-                    <span className="text-white/70 font-semibold block text-[11px]">Jadwal Menginap:</span>
-                    <span className="font-extrabold text-amber-300">
-                      {report.startDate} ({report.durationDays} hari)
-                    </span>
-                  </div>
+          <div>
+            <span className="text-white/70 font-semibold block text-[10px] sm:text-[11px]">Jadwal Menginap:</span>
+            <span className="font-extrabold text-amber-300 text-[11px] sm:text-xs block">
+              {report.startDate} ({report.durationDays} hari)
+            </span>
+          </div>
 
-                  <div>
-                    <span className="text-white/70 font-semibold block text-[11px]">Nomor Telepon:</span>
-                    <span className="font-bold text-white">{report.contactPhone || "-"}</span>
-                  </div>
-                </div>
+          <div>
+            <span className="text-white/70 font-semibold block text-[10px] sm:text-[11px]">Nomor Telepon:</span>
+            <span className="font-bold text-white text-[11px] sm:text-xs block">{report.contactPhone || "-"}</span>
+          </div>
+        </div>
 
                 {/* Address & Reason */}
                 <div className="relative z-10 space-y-2 text-xs text-white/90">

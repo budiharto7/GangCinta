@@ -161,7 +161,7 @@ export default function FinancePage({ isTransactionOpen, setIsTransactionOpen })
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow-xs">
+            <h1 className="text-xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow-xs">
               Laporan Keuangan & Status Iuran Warga
             </h1>
 
@@ -171,11 +171,11 @@ export default function FinancePage({ isTransactionOpen, setIsTransactionOpen })
           </div>
 
           {/* Month Picker & Action Buttons */}
-          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 z-10">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 z-10">
             <select
               value={currentMonthKey}
               onChange={(e) => setCurrentMonthKey(e.target.value)}
-              className="px-3.5 py-2.5 rounded-full border border-white/30 text-xs font-bold bg-slate-900/80 text-white backdrop-blur-md shadow-xs focus:ring-2 focus:ring-amber-400 focus:outline-none cursor-pointer"
+              className="px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-full border border-white/30 text-[11px] sm:text-xs font-bold bg-slate-900/80 text-white backdrop-blur-md shadow-xs focus:ring-2 focus:ring-amber-400 focus:outline-none cursor-pointer"
             >
               <option value="2026-09" className="bg-slate-900 text-white">September 2026</option>
               <option value="2026-08" className="bg-slate-900 text-white">Agustus 2026</option>
@@ -187,34 +187,34 @@ export default function FinancePage({ isTransactionOpen, setIsTransactionOpen })
               <>
                 <button
                   onClick={() => setIsPrintModalOpen(true)}
-                  className="flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-white/15 hover:bg-white/25 text-white border border-white/20 font-bold text-xs backdrop-blur-md shadow-md transition active:scale-95 cursor-pointer"
+                  className="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full bg-white/15 hover:bg-white/25 text-white border border-white/20 font-bold text-[11px] sm:text-xs backdrop-blur-md shadow-md transition active:scale-95 cursor-pointer"
                   title="Pratinjau & Cetak Laporan Keuangan"
                 >
-                  <Printer className="w-4 h-4 text-amber-300" />
+                  <Printer className="w-3.5 h-3.5 text-amber-300" />
                   <span>Print Laporan</span>
                 </button>
 
                 <button
                   onClick={handleDownloadWord}
-                  className="flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-blue-500/80 hover:bg-blue-600/90 text-white font-bold text-xs backdrop-blur-md shadow-md transition active:scale-95 border border-blue-400/40 cursor-pointer"
+                  className="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full bg-blue-500/80 hover:bg-blue-600/90 text-white font-bold text-[11px] sm:text-xs backdrop-blur-md shadow-md transition active:scale-95 border border-blue-400/40 cursor-pointer"
                   title="Download Dokumen Microsoft Word (.doc)"
                 >
-                  <FileText className="w-4 h-4 text-blue-200" />
-                  <span>Download Word (.doc)</span>
+                  <FileText className="w-3.5 h-3.5 text-blue-200" />
+                  <span>Word (.doc)</span>
                 </button>
 
                 <button
                   onClick={handleDownloadExcel}
-                  className="flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-emerald-500/80 hover:bg-emerald-600/90 text-white font-bold text-xs backdrop-blur-md shadow-md transition active:scale-95 border border-emerald-400/40 cursor-pointer"
+                  className="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full bg-emerald-500/80 hover:bg-emerald-600/90 text-white font-bold text-[11px] sm:text-xs backdrop-blur-md shadow-md transition active:scale-95 border border-emerald-400/40 cursor-pointer"
                   title="Download Dokumen Microsoft Excel (.xls)"
                 >
-                  <Download className="w-4 h-4 text-emerald-200" />
-                  <span>Download Excel (.xls)</span>
+                  <Download className="w-3.5 h-3.5 text-emerald-200" />
+                  <span>Excel (.xls)</span>
                 </button>
               </>
             ) : (
-              <div className="text-xs font-medium text-white/90 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
-                👁️ Transparansi Kas Gang Cinta (Print & Download Khusus Ketua Gang & Bendahara)
+              <div className="text-[11px] sm:text-xs font-medium text-white/90 bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-full border border-white/20">
+                👁️ Transparansi Kas Gang Cinta
               </div>
             )}
 
@@ -225,15 +225,15 @@ export default function FinancePage({ isTransactionOpen, setIsTransactionOpen })
                     setPrefilledDate(new Date().toISOString().split("T")[0]);
                     setIsTransactionOpen(true);
                   }}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-xs shadow-lg transition transform active:scale-95 hover:bg-slate-100 cursor-pointer"
+                  className="flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs shadow-lg transition transform active:scale-95 hover:bg-slate-100 cursor-pointer"
                 >
-                  <Plus className="w-4 h-4 text-emerald-600" />
+                  <Plus className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Catat Transaksi</span>
                 </button>
 
                 <button
                   onClick={() => setIsStartingBalanceOpen(true)}
-                  className="flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-white/15 hover:bg-white/25 text-white font-bold text-xs border border-white/20 backdrop-blur-md transition cursor-pointer"
+                  className="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full bg-white/15 hover:bg-white/25 text-white font-bold text-[11px] sm:text-xs border border-white/20 backdrop-blur-md transition cursor-pointer"
                   title="Atur Saldo Awal 5 Pos"
                 >
                   <Edit3 className="w-3.5 h-3.5 text-amber-300" />

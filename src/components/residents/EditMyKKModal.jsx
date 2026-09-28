@@ -6,43 +6,12 @@ import {
   X, Users, UserPlus, Trash2, Home, Check, Plus, Edit2, ShieldAlert, 
   Award, KeyRound, Phone, ShieldCheck 
 } from "lucide-react";
-import KKUploadDropzone from "../common/KKUploadDropzone";
 
 export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated }) {
   const { showToast, refreshUsers, allUsers, user } = useAuth();
   const memberFormRef = useRef(null);
 
   const isAdmin = user?.role === "admin";
-
-  const handleKKParsed = (parsed) => {
-    if (!parsed) return;
-    const hasData = Boolean(parsed.kkNumber || parsed.headOfFamily || (parsed.members && parsed.members.length > 0));
-
-    if (!hasData) {
-      showToast("Foto KK tersimpan. Jika teks miring, gunakan tombol Putar Foto 90°.", "info");
-      return;
-    }
-
-    setFormData(prev => ({
-      ...prev,
-      kkNumber: parsed.kkNumber || prev.kkNumber,
-      headOfFamily: parsed.headOfFamily || prev.headOfFamily,
-      block: parsed.block || prev.block,
-      houseNumber: parsed.houseNumber || prev.houseNumber,
-      address: parsed.address || prev.address,
-      phone: parsed.phone || prev.phone,
-      members: (parsed.members && parsed.members.length > 0) ? parsed.members : prev.members
-    }));
-
-    if (parsed.headOfFamily && (!username || username.startsWith("warga_"))) {
-      const cleanName = parsed.headOfFamily.toLowerCase().replace(/[^a-z0-9]/g, "");
-      const houseDigits = (parsed.houseNumber || "").replace(/\D/g, "");
-      const suggested = houseDigits ? `${cleanName.slice(0, 10)}${houseDigits}` : cleanName.slice(0, 12);
-      setUsername(suggested);
-    }
-
-    showToast(`Data KK ${parsed.headOfFamily ? `(${parsed.headOfFamily})` : ""} berhasil diisi ke formulir!`, "success");
-  };
 
   // Find assigned user account for this family
   const assignedUser = (allUsers || []).find(
@@ -328,59 +297,57 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-fade-in my-8">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-start sm:items-center justify-center p-2 sm:p-4">
+      <div className="relative w-full max-w-3xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-fade-in my-2 sm:my-6">
         
         {/* Header */}
-        <div className="px-6 py-5 theme-gradient-banner text-white flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center backdrop-blur">
-              <Users className="w-5 h-5 text-white" />
+        <div className="px-4 py-3 sm:px-6 sm:py-4 theme-gradient-banner text-white flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white/15 flex items-center justify-center backdrop-blur flex-shrink-0">
+              <Users className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
-            <div>
-              <h3 className="font-bold text-lg">Lengkapi & Perbarui Data Keluarga (KK)</h3>
-              <p className="text-xs text-white/80">
-                Pengisian data diri per KK, susunan anggota & status akun login
+            <div className="min-w-0">
+              <h3 className="font-bold text-sm sm:text-base truncate">Lengkapi & Perbarui Data Keluarga (KK)</h3>
+              <p className="text-[10px] sm:text-xs text-white/80 truncate">
+                Pengisian data diri per KK, susunan anggota & akun login
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition"
+            className="p-1.5 sm:p-2 rounded-lg sm:rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition flex-shrink-0"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
+        <form onSubmit={handleSubmit} className="p-3 sm:p-5 space-y-3 sm:space-y-4 max-h-[85vh] sm:max-h-[80vh] overflow-y-auto">
           
-          {/* Upload / Foto Scan KK Auto-Fill Khusus Data KK User Sendiri */}
-          <KKUploadDropzone onKKParsed={handleKKParsed} title="Unggah / Foto Scan Kartu Keluarga (Auto-Fill Form)" />
-
           {/* Section 1: Informasi Rumah & KK */}
-          <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
-            <h4 className="text-xs font-bold uppercase text-slate-500 tracking-wider flex items-center gap-2">
-              <Home className="w-4 h-4 theme-text-primary" /> Informasi Pokok Kartu Keluarga & Rumah
+          <div className="bg-slate-50 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-200 space-y-2.5 sm:space-y-3">
+            <h4 className="text-[11px] sm:text-xs font-bold uppercase text-slate-500 tracking-wider flex items-center gap-1.5">
+              <Home className="w-3.5 h-3.5 theme-text-primary flex-shrink-0" /> Informasi Pokok Kartu Keluarga & Rumah
             </h4>
 
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Nomor KK (16 Digit)
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
+              <div className="col-span-2 sm:col-span-2">
+                <label className="block text-[10px] sm:text-xs font-bold text-slate-700 mb-0.5 sm:mb-1">
+                  Nomor KK (16 Digit) *
                 </label>
                 <input
                   type="text"
                   required
                   value={formData.kkNumber}
                   onChange={(e) => setFormData({ ...formData, kkNumber: e.target.value })}
-                  className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                  placeholder="3201xxxxxxxxxxxx"
+                  className="w-full px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs font-mono focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Nama Kepala Keluarga
+              <div className="col-span-2 sm:col-span-2">
+                <label className="block text-[10px] sm:text-xs font-bold text-slate-700 mb-0.5 sm:mb-1">
+                  Nama Kepala Keluarga *
                 </label>
                 <input
                   type="text"
@@ -397,18 +364,19 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
                     });
                     setFormData({ ...formData, headOfFamily: newHead, members: updatedMembers });
                   }}
-                  className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                  placeholder="Nama Kepala Keluarga"
+                  className="w-full px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+                <label className="block text-[10px] sm:text-xs font-bold text-slate-700 mb-0.5 sm:mb-1">
                   Blok Rumah
                 </label>
                 <select
                   value={formData.block || "Blok F4"}
                   onChange={(e) => setFormData({ ...formData, block: e.target.value })}
-                  className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
+                  className="w-full px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                 >
                   <option value="Blok F4">Blok F4</option>
                   <option value="Blok F6">Blok F6</option>
@@ -416,29 +384,27 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Nomor Rumah (No. 01 - 30)
+                <label className="block text-[10px] sm:text-xs font-bold text-slate-700 mb-0.5 sm:mb-1">
+                  Nomor Rumah *
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="Contoh: 12 atau No. 12"
+                  placeholder="Contoh: No. 01"
                   value={formData.houseNumber}
                   onChange={(e) => setFormData({ ...formData, houseNumber: e.target.value })}
-                  className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                  className="w-full px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                 />
               </div>
-            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Status Rumah Tinggal
+                <label className="block text-[10px] sm:text-xs font-bold text-slate-700 mb-0.5 sm:mb-1">
+                  Status Rumah
                 </label>
                 <select
                   value={formData.houseStatus}
                   onChange={(e) => setFormData({ ...formData, houseStatus: e.target.value })}
-                  className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
+                  className="w-full px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                 >
                   <option value="Milik Sendiri">Milik Sendiri</option>
                   <option value="Kontrak">Kontrak</option>
@@ -447,76 +413,77 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Nomor WhatsApp / HP
+                <label className="block text-[10px] sm:text-xs font-bold text-slate-700 mb-0.5 sm:mb-1">
+                  No. WhatsApp / HP
                 </label>
                 <input
                   type="text"
+                  placeholder="0812-xxxx-xxxx"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                  className="w-full px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+              <div className="col-span-2">
+                <label className="block text-[10px] sm:text-xs font-bold text-slate-700 mb-0.5 sm:mb-1">
                   Kontak Darurat
                 </label>
                 <input
                   type="text"
+                  placeholder="Nama & No. HP darurat"
                   value={formData.emergencyContact}
                   onChange={(e) => setFormData({ ...formData, emergencyContact: e.target.value })}
-                  className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                  className="w-full px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                 />
               </div>
-            </div>
 
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
-                Alamat Lengkap di Gang Cinta
-              </label>
-              <input
-                type="text"
-                value={formData.address}
-                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-              />
+              <div className="col-span-2">
+                <label className="block text-[10px] sm:text-xs font-bold text-slate-700 mb-0.5 sm:mb-1">
+                  Alamat Lengkap
+                </label>
+                <input
+                  type="text"
+                  placeholder="Gang Cinta, RT 028 RW 005..."
+                  value={formData.address}
+                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                  className="w-full px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
+                />
+              </div>
             </div>
           </div>
 
           {/* Section 2: Peran Kepengurusan RT / Gang & Hak Akses Akun (HANYA UNTUK ADMIN) */}
           {isAdmin && (
-            <div className="bg-amber-50/60 p-5 rounded-2xl border border-amber-200/80 space-y-4">
-              <div className="flex items-center justify-between gap-2">
-                <h4 className="text-xs font-bold uppercase text-amber-900 tracking-wider flex items-center gap-2">
-                  <Award className="w-4 h-4 text-amber-600" /> Struktur Kepengurusan RT / Gang & Hak Akses Akun
-                </h4>
-              </div>
+            <div className="bg-amber-50/60 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-amber-200/80 space-y-2.5 sm:space-y-3">
+              <h4 className="text-[11px] sm:text-xs font-bold uppercase text-amber-900 tracking-wider flex items-center gap-1.5">
+                <Award className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" /> Struktur Kepengurusan RT / Gang & Akun Login
+              </h4>
 
               {/* Status Peran / Jabatan (Ketik Manual) */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+                <label className="block text-[10px] sm:text-xs font-bold text-slate-700 mb-0.5 sm:mb-1">
                   Status Peran / Jabatan Pengurus (Ketik Manual) *
                 </label>
                 <div className="relative">
-                  <span className="text-base absolute left-3 top-1/2 -translate-y-1/2 select-none">
+                  <span className="text-sm sm:text-base absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 select-none">
                     {selectedIcon}
                   </span>
                   <input
                     type="text"
                     required
-                    placeholder="Ketik manual, misal: Ketua RT 028, Sekretaris, Bendahara Kas, Seksi Keamanan..."
+                    placeholder="Ketua RT, Sekretaris, Bendahara, Seksi..."
                     value={roleTitle}
                     onChange={(e) => setRoleTitle(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white transition"
+                    className="w-full pl-8 sm:pl-9 pr-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs font-bold text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white transition"
                   />
                 </div>
               </div>
 
               {/* Pilih Ikon Simbol Jabatan Pengurus RT & Gang */}
               <div>
-                <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-                  Pilih Ikon Simbol Jabatan Pengurus RT & Gang:
+                <label className="block text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                  Pilih Ikon Simbol Jabatan:
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
                   {PRESET_ICONS.map((item) => (
@@ -524,23 +491,23 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
                       key={item.title}
                       type="button"
                       onClick={() => handleSelectPresetIcon(item)}
-                      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs border transition text-left ${
+                      className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg sm:rounded-xl text-xs border transition text-left ${
                         selectedIcon === item.icon
                           ? "theme-bg-light theme-border-light theme-text-primary-dark ring-2 ring-emerald-500 shadow-2xs font-extrabold bg-white"
                           : "bg-white border-slate-200 text-slate-700 hover:bg-slate-100"
                       }`}
                     >
-                      <span className="text-base flex-shrink-0">{item.icon}</span>
-                      <span className="truncate text-[11px] font-semibold">{item.title}</span>
+                      <span className="text-sm sm:text-base flex-shrink-0">{item.icon}</span>
+                      <span className="truncate text-[10px] sm:text-[11px] font-semibold">{item.title}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* Credentials */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5 pt-0.5">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                  <label className="block text-[10px] sm:text-xs font-bold text-slate-700 mb-0.5 sm:mb-1">
                     Username Login Akun *
                   </label>
                   <input
@@ -548,12 +515,12 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
                     required
                     value={username}
                     onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/\s+/g, ""))}
-                    className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white font-mono"
+                    className="w-full px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white font-mono"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                  <label className="block text-[10px] sm:text-xs font-bold text-slate-700 mb-0.5 sm:mb-1">
                     Password Akun *
                   </label>
                   <input
@@ -561,7 +528,7 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white font-mono"
+                    className="w-full px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white font-mono"
                   />
                 </div>
               </div>
@@ -569,23 +536,23 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
           )}
 
           {/* Section 3: Daftar Anggota Keluarga dalam KK */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
+          <div className="space-y-3 sm:space-y-4">
+            <div className="flex items-center justify-between gap-2">
               <div>
-                <h4 className="text-xs font-bold uppercase text-slate-500 tracking-wider flex items-center gap-2">
-                  <Users className="w-4 h-4 theme-text-primary" /> Daftar Anggota Keluarga ({(formData.members || []).length} Orang)
+                <h4 className="text-[11px] sm:text-xs font-bold uppercase text-slate-500 tracking-wider flex items-center gap-1.5">
+                  <Users className="w-3.5 h-3.5 theme-text-primary flex-shrink-0" /> Daftar Anggota Keluarga ({(formData.members || []).length} Orang)
                 </h4>
-                <p className="text-[11px] text-slate-400">
-                  Masukkan data istri, anak, orang tua, atau kerabat yang tercatat di KK dan tinggal di rumah ini.
+                <p className="text-[10px] sm:text-[11px] text-slate-400">
+                  Data anggota keluarga yang tercatat di KK ini.
                 </p>
               </div>
 
               <button
                 type="button"
                 onClick={handleOpenAddMember}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl theme-bg-primary text-white text-xs font-bold hover:opacity-90 shadow-sm transition"
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl theme-bg-primary text-white text-[11px] sm:text-xs font-bold hover:opacity-90 shadow-xs transition active:scale-95 flex-shrink-0 cursor-pointer"
               >
-                <Plus className="w-3.5 h-3.5" /> Tambah Anggota
+                <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> <span>Tambah Anggota</span>
               </button>
             </div>
 
@@ -593,52 +560,52 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
             {editingMember !== null && (
               <div 
                 ref={memberFormRef}
-                className="p-4 rounded-2xl bg-emerald-50/70 border-2 border-emerald-400 shadow-sm space-y-3 animate-fade-in"
+                className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-emerald-50/70 border-2 border-emerald-400 shadow-sm space-y-2.5 sm:space-y-3 animate-fade-in"
               >
-                <div className="flex items-center justify-between border-b border-emerald-200 pb-2">
+                <div className="flex items-center justify-between border-b border-emerald-200 pb-1.5 sm:pb-2">
                   <span className="text-xs font-bold text-emerald-950 flex items-center gap-1.5">
-                    <Users className="w-4 h-4 text-emerald-600" />
-                    <span>{editingMember === "NEW" ? "Tambah Data Anggota Baru" : "Edit Data Anggota Keluarga"}</span>
+                    <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600 flex-shrink-0" />
+                    <span>{editingMember === "NEW" ? "Tambah Anggota Baru" : "Edit Data Anggota"}</span>
                   </span>
                   <button
                     type="button"
                     onClick={() => setEditingMember(null)}
-                    className="text-slate-500 hover:text-slate-800 text-xs font-bold px-2 py-0.5 rounded-lg hover:bg-white/60 transition"
+                    className="text-slate-500 hover:text-slate-800 text-[11px] sm:text-xs font-bold px-2 py-0.5 rounded-lg hover:bg-white/60 transition cursor-pointer"
                   >
-                    Batal
+                    Tutup
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5">
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-700 mb-1">Nama Lengkap *</label>
+                    <label className="block text-[10px] sm:text-[11px] font-bold text-slate-700 mb-0.5 sm:mb-1">Nama Lengkap *</label>
                     <input
                       type="text"
                       value={memberForm.fullName}
                       onChange={(e) => setMemberForm({ ...memberForm, fullName: e.target.value })}
                       placeholder="Nama sesuai KTP/Akta"
-                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
+                      className="w-full px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-700 mb-1">NIK (16 Digit)</label>
+                    <label className="block text-[10px] sm:text-[11px] font-bold text-slate-700 mb-0.5 sm:mb-1">NIK (16 Digit)</label>
                     <input
                       type="text"
                       maxLength={16}
                       value={memberForm.nik}
                       onChange={(e) => setMemberForm({ ...memberForm, nik: e.target.value.replace(/\D/g, "") })}
-                      placeholder="320101xxxxxxxxxx"
-                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none font-mono bg-white"
+                      placeholder="3201xxxxxxxxxxxx"
+                      className="w-full px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none font-mono bg-white"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-700 mb-1">Hubungan Keluarga</label>
+                    <label className="block text-[10px] sm:text-[11px] font-bold text-slate-700 mb-0.5 sm:mb-1">Hubungan Keluarga</label>
                     <select
                       value={memberForm.relation}
                       onChange={(e) => setMemberForm({ ...memberForm, relation: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
+                      className="w-full px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                     >
                       <option value="Kepala Keluarga">Kepala Keluarga</option>
                       <option value="Istri">Istri</option>
@@ -650,13 +617,13 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5">
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-700 mb-1">Jenis Kelamin</label>
+                    <label className="block text-[10px] sm:text-[11px] font-bold text-slate-700 mb-0.5 sm:mb-1">Jenis Kelamin</label>
                     <select
                       value={memberForm.gender}
                       onChange={(e) => setMemberForm({ ...memberForm, gender: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
+                      className="w-full px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                     >
                       <option value="Laki-laki">Laki-laki</option>
                       <option value="Perempuan">Perempuan</option>
@@ -664,65 +631,65 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-700 mb-1">Tempat Lahir</label>
+                    <label className="block text-[10px] sm:text-[11px] font-bold text-slate-700 mb-0.5 sm:mb-1">Tempat Lahir</label>
                     <input
                       type="text"
                       value={memberForm.birthPlace}
                       onChange={(e) => setMemberForm({ ...memberForm, birthPlace: e.target.value })}
                       placeholder="Kota lahir"
-                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
+                      className="w-full px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-700 mb-1">Tanggal Lahir</label>
+                    <label className="block text-[10px] sm:text-[11px] font-bold text-slate-700 mb-0.5 sm:mb-1">Tanggal Lahir</label>
                     <input
                       type="date"
                       value={memberForm.birthDate}
                       onChange={(e) => setMemberForm({ ...memberForm, birthDate: e.target.value })}
-                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
+                      className="w-full px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-700 mb-1">Pekerjaan</label>
+                    <label className="block text-[10px] sm:text-[11px] font-bold text-slate-700 mb-0.5 sm:mb-1">Pekerjaan</label>
                     <input
                       type="text"
                       value={memberForm.job}
                       onChange={(e) => setMemberForm({ ...memberForm, job: e.target.value })}
-                      placeholder="Pekerjaan/Pelajar"
-                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
+                      placeholder="Pekerjaan"
+                      className="w-full px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                     />
                   </div>
                 </div>
 
-                <div className="flex justify-end gap-2 pt-2">
+                <div className="flex justify-end gap-2 pt-1">
                   <button
                     type="button"
                     onClick={() => setEditingMember(null)}
-                    className="px-3 py-2 rounded-xl border border-slate-300 text-slate-600 font-bold text-xs hover:bg-slate-100 transition"
+                    className="px-3 py-1.5 rounded-lg sm:rounded-xl border border-slate-300 text-slate-600 font-bold text-xs hover:bg-slate-100 transition cursor-pointer"
                   >
                     Batal
                   </button>
                   <button
                     type="button"
                     onClick={handleSaveMember}
-                    className="px-5 py-2 rounded-xl theme-bg-primary text-white font-bold text-xs hover:opacity-90 transition shadow-sm active:scale-95"
+                    className="px-4 py-1.5 rounded-lg sm:rounded-xl theme-bg-primary text-white font-bold text-xs hover:opacity-90 transition shadow-xs active:scale-95 cursor-pointer"
                   >
-                    Simpan Anggota ke Daftar
+                    Simpan Anggota
                   </button>
                 </div>
               </div>
             )}
 
             {/* Mobile Cards View (Visible on small screens) */}
-            <div className="sm:hidden space-y-2.5">
+            <div className="sm:hidden space-y-2">
               {(formData.members || []).map((m, idx) => (
-                <div key={m?.id || idx} className="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs space-y-2">
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <div className="font-bold text-slate-900 text-xs">{m?.fullName || "-"}</div>
-                      <div className="text-[11px] text-slate-500 font-mono mt-0.5">NIK: {m?.nik || "-"}</div>
+                <div key={m?.id || idx} className="bg-white p-2.5 rounded-xl border border-slate-200 shadow-2xs space-y-1.5">
+                  <div className="flex items-start justify-between gap-1.5">
+                    <div className="min-w-0">
+                      <div className="font-bold text-slate-900 text-xs truncate">{m?.fullName || "-"}</div>
+                      <div className="text-[10px] text-slate-500 font-mono">NIK: {m?.nik || "-"}</div>
                     </div>
                     <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border flex-shrink-0 ${
                       m?.relation === "Kepala Keluarga"
@@ -733,28 +700,28 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-1 text-[11px] text-slate-600 border-t border-slate-100 pt-1.5">
+                  <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-[10px] text-slate-600 border-t border-slate-100 pt-1">
                     <div><span className="text-slate-400">JK:</span> {m?.gender || "-"}</div>
                     <div><span className="text-slate-400">Goldar:</span> {m?.bloodType || "-"}</div>
                     <div className="col-span-2 truncate"><span className="text-slate-400">Lahir:</span> {m?.birthPlace ? `${m.birthPlace}, ` : ""}{m?.birthDate || "-"}</div>
                     <div className="col-span-2 truncate"><span className="text-slate-400">Kerja:</span> {m?.job || "-"}</div>
                   </div>
 
-                  <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                  <div className="flex items-center justify-end gap-1.5 pt-1.5 border-t border-slate-100">
                     <button
                       type="button"
                       onClick={() => handleOpenEditMember(m, idx)}
-                      className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition active:scale-95"
+                      className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] flex items-center gap-1 transition active:scale-95 cursor-pointer"
                     >
-                      <Edit2 className="w-3.5 h-3.5 text-slate-600" />
+                      <Edit2 className="w-3 h-3 text-slate-600" />
                       <span>Edit</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDeleteMember(idx)}
-                      className="px-3.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs flex items-center gap-1.5 transition active:scale-95"
+                      className="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-[11px] flex items-center gap-1 transition active:scale-95 cursor-pointer"
                     >
-                      <Trash2 className="w-3.5 h-3.5 text-rose-600" />
+                      <Trash2 className="w-3 h-3 text-rose-600" />
                       <span>Hapus</span>
                     </button>
                   </div>
@@ -827,25 +794,25 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
           </div>
 
           {/* Footer Save Actions */}
-          <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-            <div className="flex items-center gap-2 text-xs text-slate-400">
-              <ShieldAlert className="w-4 h-4 theme-text-primary" />
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-3 pt-3 sm:pt-4 border-t border-slate-100">
+            <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-slate-400">
+              <ShieldAlert className="w-3.5 h-3.5 sm:w-4 sm:h-4 theme-text-primary flex-shrink-0" />
               <span>Data dilindungi kerahasiaannya untuk tertib administrasi RT.</span>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"
+                className="flex-1 sm:flex-none px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition border border-slate-200 sm:border-transparent text-center cursor-pointer"
               >
                 Batal
               </button>
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-xl text-xs font-bold text-white theme-bg-primary shadow-lg hover:opacity-90 transition active:scale-95"
+                className="flex-1 sm:flex-none px-4 py-2 sm:px-6 sm:py-2.5 rounded-xl text-xs font-bold text-white theme-bg-primary shadow-md hover:opacity-90 transition active:scale-95 text-center cursor-pointer"
               >
-                {isAdmin ? "Simpan Perubahan KK & Kepengurusan" : "Simpan Perubahan Data KK"}
+                {isAdmin ? "Simpan Perubahan KK & Pengurus" : "Simpan Perubahan Data KK"}
               </button>
             </div>
           </div>

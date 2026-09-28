@@ -799,6 +799,16 @@ export const db = {
     writeDB(data);
     return newUser;
   },
+  updateUser(userId, updates) {
+    const data = readDB();
+    const index = (data.users || []).findIndex(u => u.id === userId);
+    if (index !== -1) {
+      data.users[index] = { ...data.users[index], ...updates };
+      writeDB(data);
+      return data.users[index];
+    }
+    return null;
+  },
 
   // Families
   getFamilies() {

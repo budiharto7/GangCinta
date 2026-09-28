@@ -89,6 +89,14 @@ export const api = {
     if (res && res.user) return res.user;
     return authService.registerUser(userData);
   },
+  async updateUser(userId, data) {
+    const res = await request(`/users/${userId}`, {
+      method: "PUT",
+      body: JSON.stringify(data)
+    });
+    if (res && res.user) return res.user;
+    return authService.updateUserAccount(userId, data);
+  },
 
   // Families
   async getFamilies() {

@@ -22,6 +22,20 @@ app.use(cors({
 app.use(express.json({ limit: '15mb' }));
 
 
+// Middleware to ensure DB connection is initialized
+let isDbReady = false;
+app.use(async (req, res, next) => {
+  if (!isDbReady && req.path.startsWith('/api')) {
+    try {
+      await initDB();
+      isDbReady = true;
+    } catch (err) {
+      console.warn("DB init warning:", err);
+    }
+  }
+  next();
+});
+
 // --- API ROUTES ---
 
 // Theme
@@ -113,6 +127,15 @@ app.post('/api/users', (req, res) => {
 app.delete('/api/users/:id', (req, res) => {
   db.deleteUser(req.params.id);
   res.json({ success: true });
+});
+
+app.put('/api/users/:id', async (req, res) => {
+  const updated = db.updateUser(req.params.id, req.body);
+  if (updated) {
+    res.json({ success: true, user: updated });
+  } else {
+    res.status(404).json({ success: false, message: 'User tidak ditemukan' });
+  }
 });
 
 // Families (KK)

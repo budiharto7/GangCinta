@@ -69,8 +69,8 @@ export default function ResidentsPage({ isRegisterOpen, setIsRegisterOpen }) {
     };
   }, []);
 
-  // Auto-polling: data warga otomatis update setiap 8 detik di semua HP
-  usePolling(refreshFamilies, 8000);
+  // Live auto-polling: data warga otomatis update live setiap 3.5 detik di semua HP & laptop
+  usePolling(refreshFamilies, 3500);
 
   // Find user's own family (supports Admin, Bendahara, and all users)
   const myFamily = user ? (

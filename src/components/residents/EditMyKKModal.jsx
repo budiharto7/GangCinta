@@ -230,7 +230,7 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
     showToast(`Data anggota "${memberName}" berhasil dihapus dari daftar KK.`, "info");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const cleanBlock = formData.block ? formData.block.trim() : "Blok F4";
@@ -243,10 +243,18 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
         address: formData.address || `Gang Cinta RT 028 / RW 005, Perumahan Bumi Nagara Lestari, ${cleanBlock} ${formattedHouseNo}`
       };
 
-      // 1. Update Family Record
-      const updated = familyService.updateFamily(family.id, payload);
+      // 1. Update Family Record in local storage immediately
+      let updated = familyService.updateFamily(family.id, payload);
 
-      // 2. Update Associated User Account Kepengurusan & Login Credentials
+      // 2. Sync to Backend API so phones and other devices get it live
+      try {
+        const apiUpdated = await api.updateFamily(family.id, payload);
+        if (apiUpdated) updated = apiUpdated;
+      } catch (apiErr) {
+        console.warn("API update family fallback:", apiErr);
+      }
+
+      // 3. Update Associated User Account Kepengurusan & Login Credentials
       const realUser = (allUsers || []).find(
         x => !x.id.startsWith("derived-") && (
           x.id === family.assignedUserId || 
@@ -283,7 +291,7 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
         }
       }
 
-      const updatedUser = authService.updateUserAccount(targetUserId, {
+      const userUpdates = {
         name: formData.headOfFamily.trim(),
         jabatan: finalJabatan,
         icon: selectedIcon,
@@ -292,14 +300,26 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
         password: password || realUser?.password || "123",
         phone: formData.phone.trim(),
         houseNo: `${cleanBlock} ${formattedHouseNo}`
-      });
+      };
+
+      const updatedUser = authService.updateUserAccount(targetUserId, userUpdates);
+      try {
+        await api.updateUser(targetUserId, userUpdates);
+      } catch (uErr) {
+        console.warn("API update user fallback:", uErr);
+      }
 
       if (updatedUser && updatedUser.id) {
         familyService.updateFamily(family.id, { assignedUserId: updatedUser.id });
+        api.updateFamily(family.id, { assignedUserId: updatedUser.id }).catch(() => {});
       }
 
+      // Broadcast changes across tabs & window
+      window.dispatchEvent(new CustomEvent("families-data-changed"));
+      window.dispatchEvent(new CustomEvent("users-data-changed"));
+
       refreshUsers?.();
-      showToast("Data KK, susunan keluarga, dan akun login berhasil disimpan!", "success");
+      showToast("Data KK, susunan keluarga, dan akun login berhasil disimpan & disinkronkan!", "success");
       if (onFamilyUpdated) onFamilyUpdated(updated);
       onClose();
     } catch (err) {

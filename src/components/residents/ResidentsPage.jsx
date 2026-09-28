@@ -72,8 +72,13 @@ export default function ResidentsPage({ isRegisterOpen, setIsRegisterOpen }) {
   // Auto-polling: data warga otomatis update setiap 8 detik di semua HP
   usePolling(refreshFamilies, 8000);
 
-  // Find user's own family
-  const myFamily = user ? (families.find(f => f.assignedUserId === user.id) || null) : null;
+  // Find user's own family (supports Admin, Bendahara, and all users)
+  const myFamily = user ? (
+    families.find(f => f.assignedUserId === user.id) ||
+    families.find(f => f.headOfFamily.toLowerCase().trim() === user.name.toLowerCase().trim()) ||
+    families.find(f => user.houseNo && f.houseNumber && f.houseNumber.toLowerCase().includes(user.houseNo.replace("No. ", "").trim())) ||
+    null
+  ) : null;
 
   const parseHouseNum = (houseStr) => {
     if (!houseStr) return 0;
@@ -217,7 +222,8 @@ export default function ResidentsPage({ isRegisterOpen, setIsRegisterOpen }) {
             </button>
           )}
 
-          {user?.role === "anggota" && myFamily && (
+          {/* Lengkapi / Edit KK Saya (Tersedia untuk semua user: Ketua Gang, Bendahara, & Warga) */}
+          {user && myFamily && (
             <button
               onClick={() => setEditModalFamily(myFamily)}
               className="flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full font-extrabold text-[11px] sm:text-xs bg-white text-slate-900 shadow-lg hover:bg-slate-100 transition transform active:scale-95 cursor-pointer"
@@ -241,8 +247,8 @@ export default function ResidentsPage({ isRegisterOpen, setIsRegisterOpen }) {
         </div>
       </div>
 
-      {/* Citizen Personal KK Banner if role is Anggota */}
-      {user?.role === "anggota" && myFamily && (
+      {/* Personal KK Banner for All Logged-in Users (Ketua Gang, Bendahara, & Warga) */}
+      {user && myFamily && (
         <div className="relative overflow-hidden rounded-3xl theme-gradient-banner text-white p-6 shadow-xl transition-all border border-white/20">
           <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none" />
           
@@ -352,7 +358,7 @@ export default function ResidentsPage({ isRegisterOpen, setIsRegisterOpen }) {
         ) : (
           paginatedFamilies.map((fam) => {
             const isExpanded = expandedKkId === fam.id;
-            const isMyOwn = user ? fam.assignedUserId === user.id : false;
+            const isMyOwn = user ? (fam.assignedUserId === user.id || (myFamily && myFamily.id === fam.id)) : false;
             const canViewFullKK = user?.role === "admin" || isMyOwn;
             const canEdit = user?.role === "admin" || isMyOwn;
 

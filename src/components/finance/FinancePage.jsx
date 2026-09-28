@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { financeService, approvalService, signatureService } from "../../services/storageService";
 import { useAuth } from "../../context/AuthContext";
+import { usePolling } from "../../hooks/usePolling";
 import { 
   WalletCards, 
   ArrowUpRight, 
@@ -61,6 +62,9 @@ export default function FinancePage({ isTransactionOpen, setIsTransactionOpen })
   useEffect(() => {
     loadData();
   }, [currentMonthKey]);
+
+  // Auto-polling: data keuangan update otomatis setiap 10 detik
+  usePolling(loadData, 10000);
 
   const handleOpenEditTransaction = (trx) => {
     setEditingTransaction(trx);

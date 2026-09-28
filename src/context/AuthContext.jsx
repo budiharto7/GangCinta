@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { authService, initStorage } from "../services/storageService";
 import { api } from "../services/apiService";
+import { usePolling } from "../hooks/usePolling";
 
 const AuthContext = createContext(null);
 
@@ -57,6 +58,9 @@ export function AuthProvider({ children }) {
       window.removeEventListener("focus", handleDataChange);
     };
   }, []);
+
+  // Auto-polling: refresh daftar user setiap 8 detik agar semua HP update otomatis
+  usePolling(refreshAllUsers, 8000);
 
   const login = async (username, password) => {
     const cleanUser = (username || "").trim().toLowerCase();

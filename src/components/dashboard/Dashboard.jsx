@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { usePolling } from "../../hooks/usePolling";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import { 
@@ -121,6 +122,9 @@ export default function Dashboard({
       window.removeEventListener("focus", handleDataChange);
     };
   }, [user, currentMonthKey]);
+
+  // Auto-polling: semua data dashboard update otomatis setiap 10 detik
+  usePolling(loadAllData, 10000);
 
   if (!summary) return null;
 

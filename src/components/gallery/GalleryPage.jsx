@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { momentService, welcomeService } from "../../services/storageService";
 import { useAuth } from "../../context/AuthContext";
+import { usePolling } from "../../hooks/usePolling";
 import { 
   Camera, 
   Heart, 
@@ -64,6 +65,9 @@ export default function GalleryPage({ onOpenUpload }) {
   const refreshMoments = () => {
     setMoments(momentService.getMoments());
   };
+
+  // Auto-polling: foto & momen update otomatis setiap 10 detik
+  usePolling(refreshMoments, 10000);
 
   const categories = [
     "Semua",

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { familyService } from "../../services/storageService";
 import { api } from "../../services/apiService";
 import { useAuth } from "../../context/AuthContext";
+import { usePolling } from "../../hooks/usePolling";
 import { 
   Users, 
   Home, 
@@ -67,6 +68,9 @@ export default function ResidentsPage({ isRegisterOpen, setIsRegisterOpen }) {
       window.removeEventListener("focus", handleDataChange);
     };
   }, []);
+
+  // Auto-polling: data warga otomatis update setiap 8 detik di semua HP
+  usePolling(refreshFamilies, 8000);
 
   // Find user's own family
   const myFamily = user ? (families.find(f => f.assignedUserId === user.id) || null) : null;

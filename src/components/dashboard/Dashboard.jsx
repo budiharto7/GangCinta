@@ -199,23 +199,23 @@ export default function Dashboard({
           <GangCintaLogo size="xl" variant="plain" />
         </div>
 
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
-          <div className="space-y-2.5 sm:space-y-3.5">
-            <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-6">
+          <div className="space-y-2 sm:space-y-3.5 flex-1 min-w-0">
+            <div className="flex items-center gap-1.5 sm:gap-2.5 flex-nowrap overflow-x-auto scrollbar-none pb-0.5">
               <GangCintaLogo size="sm" variant="badge" />
-              <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[11px] sm:text-xs font-bold text-white shadow-2xs">
-                <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300" />
-                Gang Cinta • Perumahan Bumi Nagara Lestari
+              <div className="inline-flex items-center gap-1 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] sm:text-xs font-bold text-white shadow-2xs whitespace-nowrap flex-shrink-0">
+                <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300 flex-shrink-0" />
+                <span>Gang Cinta • Perumahan Bumi Nagara Lestari</span>
               </div>
-              <span className="text-[11px] sm:text-xs px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/15 font-extrabold text-white border border-white/20 backdrop-blur-md shadow-2xs">
+              <span className="text-[10px] sm:text-xs px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/15 font-extrabold text-white border border-white/20 backdrop-blur-md shadow-2xs whitespace-nowrap flex-shrink-0">
                 RT 028 RW 005
               </span>
             </div>
 
-            <h1 className="text-xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow-xs">
-              {user ? `Selamat Datang, ${user.name}` : "Portal Warga Gang Cinta - Bumi Nagara Lestari"}
+            <h1 className="text-base sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-white drop-shadow-xs">
+              {user ? `Selamat Datang, ${user.name}` : "Portal Warga Gang Cinta – Bumi Nagara Lestari"}
             </h1>
-            <div className="text-slate-200 text-xs sm:text-sm max-w-3xl leading-relaxed opacity-95">
+            <div className="text-slate-200 text-[11px] sm:text-sm max-w-3xl leading-relaxed opacity-95">
               {isKetuaGang ? (
                 isEditingWelcome ? (
                   <form 
@@ -286,23 +286,23 @@ export default function Dashboard({
             </div>
           </div>
 
-          {/* Action Buttons (Pill-shaped, responsive flex-wrap) */}
-          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+          {/* Action Buttons (Side-by-side grid on HP, stacked column on Desktop like SS 2) */}
+          <div className="grid grid-cols-2 md:grid-cols-1 gap-2 sm:gap-2.5 w-full md:w-auto md:min-w-[210px] flex-shrink-0">
             {user?.role === "admin" && (
               <>
                 <button
                   onClick={onOpenUploadMoment}
-                  className="flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs transition shadow-lg hover:bg-slate-100 active:scale-95 cursor-pointer"
+                  className="flex items-center justify-center gap-1.5 px-3 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs transition shadow-lg hover:bg-slate-100 active:scale-95 cursor-pointer whitespace-nowrap truncate"
                 >
-                  <Camera className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-800" />
-                  Upload Foto Acara
+                  <Camera className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-800 flex-shrink-0" />
+                  <span className="truncate">Upload Foto</span>
                 </button>
                 <button
                   onClick={onOpenRegisterKK}
-                  className="flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white/15 hover:bg-white/25 text-white text-[11px] sm:text-xs font-bold backdrop-blur transition border border-white/25 active:scale-95 shadow-2xs cursor-pointer"
+                  className="flex items-center justify-center gap-1.5 px-3 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white/15 hover:bg-white/25 text-white text-[11px] sm:text-xs font-bold backdrop-blur transition border border-white/25 active:scale-95 shadow-2xs cursor-pointer whitespace-nowrap truncate"
                 >
-                  <UserPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  Daftarkan KK Baru
+                  <UserPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                  <span className="truncate">Daftar KK Baru</span>
                 </button>
               </>
             )}
@@ -311,17 +311,17 @@ export default function Dashboard({
               <>
                 <button
                   onClick={onOpenNewTransaction}
-                  className="flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs transition shadow-lg hover:bg-slate-100 active:scale-95 cursor-pointer"
+                  className="flex items-center justify-center gap-1.5 px-3 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs transition shadow-lg hover:bg-slate-100 active:scale-95 cursor-pointer whitespace-nowrap truncate"
                 >
-                  <PlusCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-800" />
-                  Catat Transaksi Kas
+                  <PlusCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-800 flex-shrink-0" />
+                  <span className="truncate">Catat Transaksi</span>
                 </button>
                 <button
                   onClick={() => setActiveTab("finance")}
-                  className="flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white/15 hover:bg-white/25 text-white text-[11px] sm:text-xs font-bold backdrop-blur transition border border-white/25 active:scale-95 shadow-2xs cursor-pointer"
+                  className="flex items-center justify-center gap-1.5 px-3 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white/15 hover:bg-white/25 text-white text-[11px] sm:text-xs font-bold backdrop-blur transition border border-white/25 active:scale-95 shadow-2xs cursor-pointer whitespace-nowrap truncate"
                 >
-                  <CalendarIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  Kalender Kas
+                  <CalendarIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                  <span className="truncate">Kalender Kas</span>
                 </button>
               </>
             )}
@@ -330,17 +330,17 @@ export default function Dashboard({
               <>
                 <button
                   onClick={() => setActiveTab("residents")}
-                  className="flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs transition shadow-lg hover:bg-slate-100 active:scale-95 cursor-pointer"
+                  className="flex items-center justify-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs transition shadow-lg hover:bg-slate-100 active:scale-95 cursor-pointer whitespace-nowrap truncate"
                 >
-                  <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-800" />
-                  Isi Data KK Saya
+                  <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-800 flex-shrink-0" />
+                  <span className="truncate">Isi Data KK</span>
                 </button>
                 <button
                   onClick={() => setActiveTab("guests")}
-                  className="flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-white/20 hover:bg-white/30 text-white text-[11px] sm:text-xs font-bold backdrop-blur transition border border-white/30 active:scale-95 shadow-2xs cursor-pointer"
+                  className="flex items-center justify-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full bg-white/20 hover:bg-white/30 text-white text-[11px] sm:text-xs font-bold backdrop-blur transition border border-white/30 active:scale-95 shadow-2xs cursor-pointer whitespace-nowrap truncate"
                 >
-                  <UserPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  Lapor Tamu Menginap
+                  <UserPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                  <span className="truncate">Lapor Tamu</span>
                 </button>
               </>
             )}
@@ -349,17 +349,17 @@ export default function Dashboard({
               <>
                 <button
                   onClick={() => requireAuth(() => {}, "Masuk Akun Warga")}
-                  className="flex items-center gap-1.5 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs transition shadow-lg hover:bg-slate-100 active:scale-95 cursor-pointer"
+                  className="flex items-center justify-center gap-1.5 px-3 py-2 sm:px-5 sm:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs transition shadow-lg hover:bg-slate-100 active:scale-95 cursor-pointer whitespace-nowrap truncate"
                 >
-                  <LogIn className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-800" />
-                  Masuk Akun Warga
+                  <LogIn className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-800 flex-shrink-0" />
+                  <span className="truncate">Masuk Akun Warga</span>
                 </button>
                 <button
                   onClick={() => setActiveTab("finance")}
-                  className="flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-white/20 hover:bg-white/30 text-white text-[11px] sm:text-xs font-bold backdrop-blur transition border border-white/30 active:scale-95 shadow-2xs cursor-pointer"
+                  className="flex items-center justify-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full bg-white/20 hover:bg-white/30 text-white text-[11px] sm:text-xs font-bold backdrop-blur transition border border-white/30 active:scale-95 shadow-2xs cursor-pointer whitespace-nowrap truncate"
                 >
-                  <Wallet className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  Transparansi Kas 5 Pos
+                  <Wallet className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                  <span className="truncate">Transparansi Kas 5 Pos</span>
                 </button>
               </>
             )}

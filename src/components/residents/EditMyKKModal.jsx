@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { familyService, authService } from "../../services/storageService";
+import { api } from "../../services/apiService";
 import { useAuth } from "../../context/AuthContext";
 import { 
   X, Users, UserPlus, Trash2, Home, Check, Plus, Edit2, ShieldAlert, 
@@ -9,10 +10,19 @@ import KKUploadDropzone from "../common/KKUploadDropzone";
 
 export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated }) {
   const { showToast, refreshUsers, allUsers, user } = useAuth();
+  const memberFormRef = useRef(null);
 
   const isAdmin = user?.role === "admin";
 
   const handleKKParsed = (parsed) => {
+    if (!parsed) return;
+    const hasData = Boolean(parsed.kkNumber || parsed.headOfFamily || (parsed.members && parsed.members.length > 0));
+
+    if (!hasData) {
+      showToast("Foto KK tersimpan. Jika teks miring, gunakan tombol Putar Foto 90°.", "info");
+      return;
+    }
+
     setFormData(prev => ({
       ...prev,
       kkNumber: parsed.kkNumber || prev.kkNumber,
@@ -21,7 +31,7 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
       houseNumber: parsed.houseNumber || prev.houseNumber,
       address: parsed.address || prev.address,
       phone: parsed.phone || prev.phone,
-      members: parsed.members && parsed.members.length > 0 ? parsed.members : prev.members
+      members: (parsed.members && parsed.members.length > 0) ? parsed.members : prev.members
     }));
 
     if (parsed.headOfFamily && (!username || username.startsWith("warga_"))) {
@@ -31,7 +41,7 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
       setUsername(suggested);
     }
 
-    showToast("Data Foto/Scan KK berhasil diekstraksi ke form!", "success");
+    showToast(`Data KK ${parsed.headOfFamily ? `(${parsed.headOfFamily})` : ""} berhasil diisi ke formulir!`, "success");
   };
 
   // Find assigned user account for this family
@@ -151,11 +161,17 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
       religion: "Islam",
       bloodType: "-"
     });
+    setTimeout(() => {
+      memberFormRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 80);
   };
 
   const handleOpenEditMember = (member, index) => {
     setEditingMember(index);
     setMemberForm({ ...member });
+    setTimeout(() => {
+      memberFormRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 80);
   };
 
   const handleSaveMember = () => {
@@ -193,21 +209,25 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
   const handleDeleteMember = (index) => {
     const targetMember = (formData.members || [])[index];
     const memberName = targetMember?.fullName || "Anggota ini";
-    if (window.confirm(`Hapus data anggota keluarga "${memberName}"? Seluruh akun pengguna, pesan obrolan, dan data terkait akan dibersihkan tuntas tanpa sisa.`)) {
-      if (targetMember) {
+
+    if (targetMember && family?.id) {
+      try {
         familyService.deleteMember(family.id, targetMember.id, targetMember.fullName);
         api.deleteMember(family.id, targetMember.id, targetMember.fullName).catch(() => {});
+      } catch (err) {
+        console.warn("Delete member warning:", err);
       }
-      const updatedMembers = (formData.members || []).filter((_, i) => i !== index);
-      let newHead = formData.headOfFamily;
-      if (targetMember && targetMember.fullName?.toLowerCase().trim() === (formData.headOfFamily || "").toLowerCase().trim()) {
-        if (updatedMembers.length > 0) {
-          newHead = updatedMembers[0].fullName;
-        }
-      }
-      setFormData({ ...formData, headOfFamily: newHead, members: updatedMembers });
-      showToast(`Data anggota ${memberName} dan seluruh data terkait telah dibersihkan.`, "info");
     }
+
+    const updatedMembers = (formData.members || []).filter((_, i) => i !== index);
+    let newHead = formData.headOfFamily;
+    if (targetMember && targetMember.fullName?.toLowerCase().trim() === (formData.headOfFamily || "").toLowerCase().trim()) {
+      if (updatedMembers.length > 0) {
+        newHead = updatedMembers[0].fullName;
+      }
+    }
+    setFormData({ ...formData, headOfFamily: newHead, members: updatedMembers });
+    showToast(`Data anggota "${memberName}" berhasil dihapus dari daftar KK.`, "info");
   };
 
   const handleSubmit = (e) => {
@@ -551,15 +571,19 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
 
             {/* Member Form Inline if active */}
             {editingMember !== null && (
-              <div className="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-300 space-y-3 animate-fade-in">
+              <div 
+                ref={memberFormRef}
+                className="p-4 rounded-2xl bg-emerald-50/70 border-2 border-emerald-400 shadow-sm space-y-3 animate-fade-in"
+              >
                 <div className="flex items-center justify-between border-b border-emerald-200 pb-2">
-                  <span className="text-xs font-bold text-emerald-900">
-                    {editingMember === "NEW" ? "Tambah Data Anggota Baru" : "Edit Data Anggota"}
+                  <span className="text-xs font-bold text-emerald-950 flex items-center gap-1.5">
+                    <Users className="w-4 h-4 text-emerald-600" />
+                    <span>{editingMember === "NEW" ? "Tambah Data Anggota Baru" : "Edit Data Anggota Keluarga"}</span>
                   </span>
                   <button
                     type="button"
                     onClick={() => setEditingMember(null)}
-                    className="text-emerald-700 hover:text-emerald-900 text-xs font-bold"
+                    className="text-slate-500 hover:text-slate-800 text-xs font-bold px-2 py-0.5 rounded-lg hover:bg-white/60 transition"
                   >
                     Batal
                   </button>
@@ -573,7 +597,7 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
                       value={memberForm.fullName}
                       onChange={(e) => setMemberForm({ ...memberForm, fullName: e.target.value })}
                       placeholder="Nama sesuai KTP/Akta"
-                      className="w-full px-3 py-1.5 rounded-lg border border-slate-300 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                     />
                   </div>
 
@@ -585,7 +609,7 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
                       value={memberForm.nik}
                       onChange={(e) => setMemberForm({ ...memberForm, nik: e.target.value.replace(/\D/g, "") })}
                       placeholder="320101xxxxxxxxxx"
-                      className="w-full px-3 py-1.5 rounded-lg border border-slate-300 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none font-mono"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none font-mono bg-white"
                     />
                   </div>
 
@@ -594,7 +618,7 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
                     <select
                       value={memberForm.relation}
                       onChange={(e) => setMemberForm({ ...memberForm, relation: e.target.value })}
-                      className="w-full px-3 py-1.5 rounded-lg border border-slate-300 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none bg-white"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                     >
                       <option value="Kepala Keluarga">Kepala Keluarga</option>
                       <option value="Istri">Istri</option>
@@ -612,7 +636,7 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
                     <select
                       value={memberForm.gender}
                       onChange={(e) => setMemberForm({ ...memberForm, gender: e.target.value })}
-                      className="w-full px-3 py-1.5 rounded-lg border border-slate-300 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none bg-white"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                     >
                       <option value="Laki-laki">Laki-laki</option>
                       <option value="Perempuan">Perempuan</option>
@@ -626,7 +650,7 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
                       value={memberForm.birthPlace}
                       onChange={(e) => setMemberForm({ ...memberForm, birthPlace: e.target.value })}
                       placeholder="Kota lahir"
-                      className="w-full px-3 py-1.5 rounded-lg border border-slate-300 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                     />
                   </div>
 
@@ -636,7 +660,7 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
                       type="date"
                       value={memberForm.birthDate}
                       onChange={(e) => setMemberForm({ ...memberForm, birthDate: e.target.value })}
-                      className="w-full px-3 py-1.5 rounded-lg border border-slate-300 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                     />
                   </div>
 
@@ -647,16 +671,23 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
                       value={memberForm.job}
                       onChange={(e) => setMemberForm({ ...memberForm, job: e.target.value })}
                       placeholder="Pekerjaan/Pelajar"
-                      className="w-full px-3 py-1.5 rounded-lg border border-slate-300 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white"
                     />
                   </div>
                 </div>
 
-                <div className="flex justify-end pt-2">
+                <div className="flex justify-end gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setEditingMember(null)}
+                    className="px-3 py-2 rounded-xl border border-slate-300 text-slate-600 font-bold text-xs hover:bg-slate-100 transition"
+                  >
+                    Batal
+                  </button>
                   <button
                     type="button"
                     onClick={handleSaveMember}
-                    className="px-4 py-1.5 rounded-xl theme-bg-primary text-white font-bold text-xs hover:opacity-90 transition shadow-sm"
+                    className="px-5 py-2 rounded-xl theme-bg-primary text-white font-bold text-xs hover:opacity-90 transition shadow-sm active:scale-95"
                   >
                     Simpan Anggota ke Daftar
                   </button>
@@ -664,8 +695,55 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
               </div>
             )}
 
-            {/* Members Table */}
-            <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+            {/* Mobile Cards View (Visible on small screens) */}
+            <div className="sm:hidden space-y-2.5">
+              {(formData.members || []).map((m, idx) => (
+                <div key={m?.id || idx} className="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs space-y-2">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="font-bold text-slate-900 text-xs">{m?.fullName || "-"}</div>
+                      <div className="text-[11px] text-slate-500 font-mono mt-0.5">NIK: {m?.nik || "-"}</div>
+                    </div>
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border flex-shrink-0 ${
+                      m?.relation === "Kepala Keluarga"
+                        ? "bg-emerald-100 text-emerald-800 border-emerald-300"
+                        : "bg-slate-100 text-slate-700 border-slate-200"
+                    }`}>
+                      {m?.relation || "-"}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-1 text-[11px] text-slate-600 border-t border-slate-100 pt-1.5">
+                    <div><span className="text-slate-400">JK:</span> {m?.gender || "-"}</div>
+                    <div><span className="text-slate-400">Goldar:</span> {m?.bloodType || "-"}</div>
+                    <div className="col-span-2 truncate"><span className="text-slate-400">Lahir:</span> {m?.birthPlace ? `${m.birthPlace}, ` : ""}{m?.birthDate || "-"}</div>
+                    <div className="col-span-2 truncate"><span className="text-slate-400">Kerja:</span> {m?.job || "-"}</div>
+                  </div>
+
+                  <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                    <button
+                      type="button"
+                      onClick={() => handleOpenEditMember(m, idx)}
+                      className="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition active:scale-95"
+                    >
+                      <Edit2 className="w-3.5 h-3.5 text-slate-600" />
+                      <span>Edit</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteMember(idx)}
+                      className="px-3.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs flex items-center gap-1.5 transition active:scale-95"
+                    >
+                      <Trash2 className="w-3.5 h-3.5 text-rose-600" />
+                      <span>Hapus</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Members Table (Hidden on small screens) */}
+            <div className="hidden sm:block border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead className="bg-slate-100/80 text-slate-600 font-bold border-b border-slate-200">

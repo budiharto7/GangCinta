@@ -25,6 +25,12 @@ export default function RegisterKKModal({ isOpen, onClose, onKKRegistered }) {
   const [password, setPassword] = useState("123");
 
   const handleKKParsed = (parsed) => {
+    if (!parsed) return;
+    const hasData = Boolean(parsed.headOfFamily || parsed.kkNumber || (parsed.members && parsed.members.length > 0));
+    if (!hasData) {
+      showToast("Foto KK tersimpan. Jika teks miring, gunakan tombol Putar Foto 90°.", "info");
+      return;
+    }
     if (parsed.headOfFamily) {
       setHeadOfFamily(parsed.headOfFamily);
       const cleanName = parsed.headOfFamily.toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -37,7 +43,7 @@ export default function RegisterKKModal({ isOpen, onClose, onKKRegistered }) {
     if (parsed.kkNumber) setKkNumber(parsed.kkNumber);
     if (parsed.phone) setPhone(parsed.phone);
     if (parsed.members && parsed.members.length > 0) setMembers(parsed.members);
-    showToast("Data dari foto KK berhasil mengisi formulir pendaftaran!", "success");
+    showToast(`Data KK ${parsed.headOfFamily ? `(${parsed.headOfFamily})` : ""} berhasil mengisi formulir!`, "success");
   };
 
   if (!isOpen) return null;

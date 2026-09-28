@@ -42,3 +42,12 @@ temp/
 tmp/
 cloudflared.exe
 *.traineddata
+
+# Large binary files
+*.exe
+
+# Local database (data sensitif warga, jangan di-push!)
+server/db.json
+
+# Batch scripts (lokal saja)
+*.bat

@@ -17,63 +17,126 @@ export function parseKKText(text) {
   }
 
   const cleanText = text.replace(/\r/g, '\n');
-  const lines = cleanText.split('\n').map(l => l.trim()).filter(Boolean);
+  const rawLines = cleanText.split('\n').map(l => l.trim()).filter(Boolean);
 
-  // 1. Extract 16-Digit KK Number
+  // Helper to extract 16-digit sequences from a specific line or string
+  function get16DigitsFrom(str) {
+    const list = [];
+    const regex = /(?:^|[^0-9A-Za-z])([1-9][0-9\s\.\-]{14,22}[0-9])(?:[^0-9A-Za-z]|$)/g;
+    let m;
+    while ((m = regex.exec(str)) !== null) {
+      const digits = m[1].replace(/[\s\.\-]/g, '');
+      if (digits.length === 16 && /^[1-9]/.test(digits) && !list.includes(digits)) {
+        list.push(digits);
+      }
+    }
+    return list;
+  }
+
+  // 1. Separate document into Top Header Zone and Member Table Zone
+  // The member table in Indonesian KK begins with column headers like:
+  // "Nama Lengkap", "NIK", "Jenis Kelamin", "Tempat Lahir", "Tanggal Lahir"
+  let tableHeaderIdx = rawLines.findIndex(l => 
+    /(?:Nama\s+Lengkap|Jenis\s+Kelamin|Tempat\s+Lahir)/i.test(l) &&
+    !/Nama\s+Kepala\s+Keluarga/i.test(l)
+  );
+
+  // If table header line not found by keywords, look for first line starting with row number "1." or "1 " followed by a name/NIK
+  if (tableHeaderIdx === -1) {
+    tableHeaderIdx = rawLines.findIndex((l, idx) => 
+      idx >= 2 && /^[1I][\.\s\)\-]+[A-Za-z]/.test(l)
+    );
+  }
+
+  const headerLines = tableHeaderIdx !== -1 ? rawLines.slice(0, tableHeaderIdx) : rawLines;
+  const tableLines = tableHeaderIdx !== -1 ? rawLines.slice(tableHeaderIdx) : [];
+
+  // 2. Extract KK Number STRICTLY from the Top Header Zone
   let kkNumber = '';
-  // Try pattern: "KARTU KELUARGA" followed by 16 digits
-  const kkExplicitMatch = cleanText.match(/(?:Kartu\s*Keluarga[\s\S]{0,60}?)?(?:No[\.\:\s]*)?([1-9][0-9]{15})/i);
-  if (kkExplicitMatch) {
-    kkNumber = kkExplicitMatch[1];
-  } else {
-    // Look for any 16-digit number near the top 10 lines
-    for (let i = 0; i < Math.min(lines.length, 12); i++) {
-      const match = lines[i].match(/\b([1-9][0-9]{15})\b/);
-      if (match) {
-        kkNumber = match[1];
+
+  // Priority A: Check lines near "KARTU KELUARGA" or "REPUBLIK INDONESIA" in the top header
+  for (let i = 0; i < headerLines.length; i++) {
+    const line = headerLines[i];
+    if (/KARTU\s*KELUARGA|REPUBLIK\s*INDONESIA/i.test(line)) {
+      for (let j = i; j <= Math.min(i + 3, headerLines.length - 1); j++) {
+        if (/Nama\s+Kepala|Alamat|RT[\/\.]?RW/i.test(headerLines[j])) break;
+        const candidates = get16DigitsFrom(headerLines[j]);
+        if (candidates.length > 0) {
+          kkNumber = candidates[0];
+          break;
+        }
+      }
+      if (kkNumber) break;
+    }
+  }
+
+  // Priority B: Check lines above "Nama Kepala Keluarga" or "Alamat" that have "No" or "Nomor"
+  if (!kkNumber) {
+    const metaIdx = headerLines.findIndex(l => /Nama\s+Kepala|Alamat/i.test(l));
+    const preMetaLines = metaIdx > 0 ? headerLines.slice(0, metaIdx) : headerLines.slice(0, 5);
+    for (const line of preMetaLines) {
+      if (/(?:No|Nomor)/i.test(line)) {
+        const candidates = get16DigitsFrom(line);
+        if (candidates.length > 0) {
+          kkNumber = candidates[0];
+          break;
+        }
+      }
+    }
+  }
+
+  // Priority C: Check any 16 digits in the top 4 lines of document before metadata
+  if (!kkNumber) {
+    for (let i = 0; i < Math.min(4, headerLines.length); i++) {
+      if (/Nama\s+Kepala|Alamat/i.test(headerLines[i])) break;
+      const candidates = get16DigitsFrom(headerLines[i]);
+      if (candidates.length > 0) {
+        kkNumber = candidates[0];
         break;
       }
     }
   }
 
-  // 2. Extract Head of Family (Nama Kepala Keluarga)
+  // 3. Extract Head of Family (Nama Kepala Keluarga)
   let headOfFamily = '';
-  const headMatch = cleanText.match(/(?:Nama\s+Kepala\s+Keluarga|Kepala\s+Keluarga)\s*[:\.\-]?\s*([^\n\r]+)/i);
-  if (headMatch) {
-    headOfFamily = headMatch[1]
-      .replace(/^(Bpk\.?|Ibu\.?|Bapak\.?|Sdr\.?)\s*/i, '')
-      .replace(/(?:Alamat|RT|RW|Desa|Kelurahan)[\s\S]*/i, '')
-      .replace(/[^A-Za-z\s\.\,]/g, '')
-      .trim();
+  for (let i = 0; i < headerLines.length; i++) {
+    const line = headerLines[i];
+    const match = line.match(/(?:Nama\s+Kepala\s+Keluarga|Kepala\s+Keluarga|Nama\s+KK)\s*[:\.\-]?\s*([^\n\r]*)/i);
+    if (match) {
+      let val = match[1].trim();
+      if (!val && i + 1 < headerLines.length) {
+        val = headerLines[i + 1].trim();
+      }
+      headOfFamily = val
+        .replace(/^(Bpk\.?|Ibu\.?|Bapak\.?|Sdr\.?)\s*/i, '')
+        .replace(/(?:Alamat|RT|RW|Desa|Kelurahan)[\s\S]*/i, '')
+        .replace(/[^A-Za-z\s\.\,]/g, '')
+        .trim();
+      if (headOfFamily) break;
+    }
   }
 
-  // 3. Extract Block (Blok F4 / Blok F6)
+  // 4. Extract Block, House Number, Address
   let block = 'Blok F4';
   const blockMatch = cleanText.match(/Blok\s*([A-Za-z0-9]+)/i);
   if (blockMatch) {
     const val = blockMatch[1].toUpperCase();
-    if (val.includes('F6') || val.includes('6')) {
-      block = 'Blok F6';
-    } else {
-      block = 'Blok F4';
-    }
+    if (val.includes('F6') || val.includes('6')) block = 'Blok F6';
+    else block = 'Blok F4';
   }
 
-  // 4. Extract House Number
   let houseNumber = '';
   const houseMatch = cleanText.match(/(?:No|Nomor|Rumah)\s*[\.\:\#]?\s*([0-9]{1,3})(?![0-9])/i);
   if (houseMatch) {
     houseNumber = 'No. ' + houseMatch[1].padStart(2, '0');
   }
 
-  // 5. Extract Address
   let address = '';
   const addrMatch = cleanText.match(/Alamat\s*[:\.\-]?\s*([^\n\r]+)/i);
   if (addrMatch) {
     address = addrMatch[1].replace(/^(?:RT|RW)[\s\S]*/i, '').trim();
   }
 
-  // Look for RT/RW
   let rt = '028';
   let rw = '005';
   const rtrwMatch = cleanText.match(/RT\s*[\/\.]?\s*RW\s*[:\.\-]?\s*([0-9]{1,3})\s*[\/\-]\s*([0-9]{1,3})/i);
@@ -86,120 +149,99 @@ export function parseKKText(text) {
     address = `Gang Cinta RT ${rt} RW ${rw}, Perumahan Bumi Nagara Lestari, ${block} ${houseNumber || 'No. 01'}`;
   }
 
-  // 6. Extract Members (Anggota Keluarga)
+  // 5. Extract Members strictly from Table Lines (or lines containing 16-digit NIKs)
   const members = [];
-  const all16Digits = [...cleanText.matchAll(/\b([1-9][0-9]{15})\b/g)].map(m => m[1]);
-  // Filter out the KK Number to get individual NIKs
-  const memberNIKs = all16Digits.filter((nik, idx) => nik !== kkNumber || idx > 0);
-
-  // Common Indonesian religion keywords
+  const searchLines = tableLines.length > 0 ? tableLines : rawLines;
   const religions = ['Islam', 'Kristen', 'Katolik', 'Hindu', 'Budha', 'Konghucu'];
-  
-  // Parse each detected NIK
-  for (let i = 0; i < memberNIKs.length; i++) {
-    const nik = memberNIKs[i];
-    const lineIndex = lines.findIndex(l => l.includes(nik));
-    let memberName = '';
-    let gender = 'Laki-laki';
-    let birthPlace = 'Jakarta';
-    let birthDate = '1990-01-01';
-    let job = 'Karyawan Swasta';
-    let relation = i === 0 ? 'Kepala Keluarga' : (i === 1 ? 'Istri' : 'Anak');
-    let religion = 'Islam';
 
-    if (lineIndex !== -1) {
-      const line = lines[lineIndex];
+  for (let i = 0; i < searchLines.length; i++) {
+    const line = searchLines[i];
+    // Skip table header definitions
+    if (/(?:Nama\s+Lengkap|Jenis\s+Kelamin|Tempat\s+Lahir|Status\s+Hubungan)/i.test(line)) continue;
+
+    const candidates = get16DigitsFrom(line);
+    if (candidates.length > 0) {
+      const nik = candidates[0];
+      // Do not treat header KK number as member NIK unless it's row 1 in a cropped doc
+      if (nik === kkNumber && tableLines.length === 0 && i < 3) continue;
+
+      // Extract member name before NIK
       const parts = line.split(nik);
-      
-      // Member Name before NIK
-      const beforeNIK = parts[0]
-        .replace(/^[0-9]+[\.\s\)\-]*/, '') // strip row number like "1." or "1)"
+      let memberName = (parts[0] || '')
+        .replace(/^[0-9Iil\.\s\)\-]*/, '')
         .replace(/[^A-Za-z\s\.\,]/g, '')
         .trim();
 
-      if (beforeNIK.length >= 3) {
-        memberName = beforeNIK;
-      }
-
-      // Details after NIK
       const afterNIK = parts[1] || '';
-      
-      // Gender detection
-      if (/PEREMPUAN|WANITA|\bP\b/i.test(afterNIK)) {
-        gender = 'Perempuan';
-      } else if (/LAKI|\bL\b/i.test(afterNIK)) {
-        gender = 'Laki-laki';
-      }
+      let gender = 'Laki-laki';
+      if (/PEREMPUAN|WANITA|\bP\b/i.test(afterNIK)) gender = 'Perempuan';
+      else if (/LAKI|\bL\b/i.test(afterNIK)) gender = 'Laki-laki';
 
-      // Birth Date detection (DD-MM-YYYY or DD/MM/YYYY)
+      let birthDate = '1990-01-01';
       const dateMatch = afterNIK.match(/([0-9]{2})[\-\/\.]([0-9]{2})[\-\/\.]([0-9]{4})/);
-      if (dateMatch) {
-        const [, d, m, y] = dateMatch;
-        birthDate = `${y}-${m}-${d}`;
-      }
+      if (dateMatch) birthDate = `${dateMatch[3]}-${dateMatch[2]}-${dateMatch[1]}`;
 
-      // Birth Place detection
+      let birthPlace = 'Jakarta';
       const bpMatch = afterNIK.match(/([A-Z]{3,20})\s+[0-9]{2}[\-\/\.]/);
-      if (bpMatch) {
-        birthPlace = bpMatch[1].trim();
-      }
+      if (bpMatch) birthPlace = bpMatch[1].trim();
 
-      // Job detection
+      let job = 'Karyawan Swasta';
       if (/IBU\s*RUMAH\s*TANGGA/i.test(afterNIK)) job = 'Ibu Rumah Tangga';
       else if (/PELAJAR|MAHASISWA/i.test(afterNIK)) job = 'Pelajar / Mahasiswa';
       else if (/WIRASWASTA/i.test(afterNIK)) job = 'Wiraswasta';
-      else if (/PNS|PEGAWAI\s*NEGERI/i.test(afterNIK)) job = 'PNS / ASN';
+      else if (/PNS|PEGAWAI/i.test(afterNIK)) job = 'PNS / ASN';
       else if (/BURUH/i.test(afterNIK)) job = 'Buruh Harian Lepas';
       else if (/GURU/i.test(afterNIK)) job = 'Guru / Pendidik';
       else if (/BELUM.*BEKERJA|TIDAK.*BEKERJA/i.test(afterNIK)) job = 'Belum/Tidak Bekerja';
-      else if (/KARYAWAN/i.test(afterNIK)) job = 'Karyawan Swasta';
 
-      // Religion detection
+      let religion = 'Islam';
       for (const rel of religions) {
         if (new RegExp(rel, 'i').test(afterNIK)) {
           religion = rel;
           break;
         }
       }
-    }
 
-    // Default name if not found from row
-    if (!memberName && i === 0 && headOfFamily) {
-      memberName = headOfFamily;
-    }
-    if (!memberName) {
-      memberName = `Anggota Keluarga ${i + 1}`;
-    }
+      // Member order:
+      // Row 0 is ALWAYS Kepala Keluarga!
+      let relation = 'Anak';
+      if (members.length === 0) {
+        relation = 'Kepala Keluarga';
+        if ((!memberName || memberName.length < 3) && headOfFamily) {
+          memberName = headOfFamily;
+        }
+      } else if (members.length === 1 && gender === 'Perempuan') {
+        relation = 'Istri';
+      }
 
-    // Check relationship
-    if (i === 0) {
-      relation = 'Kepala Keluarga';
-    } else if (i === 1 && gender === 'Perempuan') {
-      relation = 'Istri';
-    } else {
-      relation = 'Anak';
-    }
+      if (!memberName) {
+        memberName = members.length === 0 && headOfFamily ? headOfFamily : `Anggota Keluarga ${members.length + 1}`;
+      }
 
-    members.push({
-      id: `mem-${Date.now()}-${i}`,
-      fullName: memberName,
-      nik: nik,
-      relation,
-      gender,
-      birthPlace,
-      birthDate,
-      job,
-      religion,
-      bloodType: '-'
-    });
+      members.push({
+        id: `mem-${Date.now()}-${members.length}`,
+        fullName: memberName,
+        nik,
+        relation,
+        gender,
+        birthPlace,
+        birthDate,
+        job,
+        religion,
+        bloodType: '-'
+      });
+    }
   }
 
-  // If no member rows had 16-digit NIK, but head of family was detected
+  // Fallback: If no member row had a 16-digit NIK, but headOfFamily was detected
   if (members.length === 0 && headOfFamily) {
+    const allDigits = get16DigitsFrom(cleanText);
+    const unassignedNik = allDigits.find(d => d !== kkNumber) || '';
+
     members.push({
       id: `mem-${Date.now()}-0`,
       fullName: headOfFamily,
-      nik: '',
+      nik: unassignedNik,
       relation: 'Kepala Keluarga',
       gender: 'Laki-laki',
       birthPlace: 'Jakarta',

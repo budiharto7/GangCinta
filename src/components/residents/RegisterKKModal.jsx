@@ -226,9 +226,6 @@ export default function RegisterKKModal({ isOpen, onClose, onKKRegistered }) {
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
 
-          {/* Upload / Foto Scan KK Auto-Fill */}
-          <KKUploadDropzone onKKParsed={handleKKParsed} title="Unggah / Foto Scan KK untuk Pendaftaran Cepat" />
-
           {/* Section 1: Data Utama Warga & Rumah */}
           <div className="space-y-3.5">
             <h4 className="text-xs font-bold uppercase text-slate-400 tracking-wider flex items-center gap-2">

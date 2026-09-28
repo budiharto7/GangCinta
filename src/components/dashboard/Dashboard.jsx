@@ -79,7 +79,13 @@ export default function Dashboard({
   const loadAllData = () => {
     // Always use financeService & familyService to guarantee 100% real-time sync with actual data
     setSummary(financeService.getMonthlySummary(currentMonthKey));
-    setFamilies(familyService.getFamilies());
+    
+    api.getFamilies()
+      .then(f => {
+        if (Array.isArray(f) && f.length > 0) setFamilies(f);
+        else setFamilies(familyService.getFamilies());
+      })
+      .catch(() => setFamilies(familyService.getFamilies()));
 
     api.getMoments()
       .then(m => setMoments(m))
@@ -104,7 +110,12 @@ export default function Dashboard({
 
     const handleDataChange = () => {
       setSummary(financeService.getMonthlySummary(currentMonthKey));
-      setFamilies(familyService.getFamilies());
+      api.getFamilies()
+        .then(f => {
+          if (Array.isArray(f) && f.length > 0) setFamilies(f);
+          else setFamilies(familyService.getFamilies());
+        })
+        .catch(() => setFamilies(familyService.getFamilies()));
       setAdminWelcomeConfig(welcomeService.getAdminWelcomeConfig());
     };
 
@@ -128,7 +139,10 @@ export default function Dashboard({
 
   if (!summary) return null;
 
-  const totalCitizens = familyService.getTotalJiwa();
+  const totalCitizens = families.reduce(
+    (sum, f) => sum + (Array.isArray(f.members) && f.members.length > 0 ? f.members.length : 1), 
+    0
+  );
 
   const categories = financeService.getCategories();
 

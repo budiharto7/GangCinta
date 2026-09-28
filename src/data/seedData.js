@@ -129,6 +129,19 @@ export const INITIAL_USERS = [
     phone: "",
     houseNo: "Blok F6 No. 08",
     kkNo: "3201012300010034"
+  },
+  {
+    id: "user-1790606275834",
+    name: "Edi",
+    username: "edi",
+    password: "123",
+    role: "anggota",
+    jabatan: "Warga Biasa",
+    icon: "👤",
+    houseNo: "Blok F6 No. 07",
+    kkNo: "-",
+    phone: "",
+    avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80"
   }
 ];
 
@@ -467,6 +480,33 @@ export const INITIAL_FAMILIES = [
         job: "Wiraswasta",
         religion: "Islam",
         bloodType: "O"
+      }
+    ]
+  },
+  {
+    id: "kk-1790606276131",
+    kkNumber: "-",
+    headOfFamily: "Edi",
+    block: "Blok F6",
+    houseNumber: "No. 07",
+    address: "Gang Cinta RT 028 / RW 005, Perumahan Bumi Nagara Lestari, Blok F6 No. 07",
+    houseStatus: "Milik Sendiri",
+    phone: "",
+    emergencyContact: "",
+    assignedUserId: "user-1790606275834",
+    isProfileCompleted: false,
+    members: [
+      {
+        id: "mem-1790606276131",
+        fullName: "Edi",
+        nik: "",
+        relation: "Kepala Keluarga",
+        gender: "Laki-laki",
+        birthPlace: "",
+        birthDate: "",
+        job: "",
+        religion: "Islam",
+        bloodType: "-"
       }
     ]
   }

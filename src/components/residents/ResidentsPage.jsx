@@ -74,11 +74,43 @@ export default function ResidentsPage({ isRegisterOpen, setIsRegisterOpen }) {
 
   // Find user's own family (supports Admin, Bendahara, and all users)
   const myFamily = user ? (
-    families.find(f => f.assignedUserId === user.id) ||
-    families.find(f => f.headOfFamily.toLowerCase().trim() === user.name.toLowerCase().trim()) ||
-    families.find(f => user.houseNo && f.houseNumber && f.houseNumber.toLowerCase().includes(user.houseNo.replace("No. ", "").trim())) ||
+    families.find(f => f.assignedUserId && f.assignedUserId === user.id) ||
+    families.find(f => f.headOfFamily && user.name && f.headOfFamily.toLowerCase().trim() === user.name.toLowerCase().trim()) ||
+    families.find(f => {
+      if (!user.houseNo || !f.houseNumber) return false;
+      const cleanUserHouse = String(user.houseNo).replace(/[^0-9]/g, "");
+      const cleanFamHouse = String(f.houseNumber).replace(/[^0-9]/g, "");
+      return cleanUserHouse && cleanFamHouse && cleanUserHouse === cleanFamHouse;
+    }) ||
+    (user.role === "admin" ? (families.find(f => f.id === "kk-1") || families.find(f => f.houseNumber?.includes("01")) || families[0]) : null) ||
+    (user.role === "bendahara" ? (families.find(f => f.id === "kk-2") || families.find(f => f.houseNumber?.includes("02")) || families[1]) : null) ||
     null
   ) : null;
+
+  const handleOpenMyKK = () => {
+    if (myFamily) {
+      setEditModalFamily(myFamily);
+    } else {
+      const fallbackFamily = {
+        id: `kk-${user?.id || Date.now()}`,
+        kkNumber: user?.kkNo || "",
+        headOfFamily: user?.name || "Kepala Keluarga",
+        houseNumber: user?.houseNo || "No. 01",
+        address: `Gang Cinta, Blok ${user?.houseNo?.toLowerCase().includes("f6") ? "F6" : "F4"} ${user?.houseNo || ""}`,
+        assignedUserId: user?.id,
+        phone: user?.phone || "",
+        members: [
+          {
+            id: `mem-${Date.now()}`,
+            fullName: user?.name || "Kepala Keluarga",
+            relation: "Kepala Keluarga",
+            gender: "Laki-laki"
+          }
+        ]
+      };
+      setEditModalFamily(fallbackFamily);
+    }
+  };
 
   const parseHouseNum = (houseStr) => {
     if (!houseStr) return 0;
@@ -212,20 +244,10 @@ export default function ResidentsPage({ isRegisterOpen, setIsRegisterOpen }) {
         </div>
 
         <div className="relative z-10 flex flex-wrap items-center gap-2 sm:gap-2.5">
-          {user?.role === "admin" && (
+          {/* Lengkapi / Edit KK Saya (Tersedia untuk Ketua Gang, Bendahara, & Seluruh Warga) */}
+          {user && (
             <button
-              onClick={() => setIsRegisterOpen(true)}
-              className="flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full font-extrabold text-[11px] sm:text-xs bg-white text-slate-900 shadow-lg hover:bg-slate-100 transition transform active:scale-95 cursor-pointer"
-            >
-              <UserPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
-              Daftarkan KK Baru
-            </button>
-          )}
-
-          {/* Lengkapi / Edit KK Saya (Tersedia untuk semua user: Ketua Gang, Bendahara, & Warga) */}
-          {user && myFamily && (
-            <button
-              onClick={() => setEditModalFamily(myFamily)}
+              onClick={handleOpenMyKK}
               className="flex items-center gap-1.5 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full font-extrabold text-[11px] sm:text-xs bg-white text-slate-900 shadow-lg hover:bg-slate-100 transition transform active:scale-95 cursor-pointer"
             >
               <Edit3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />

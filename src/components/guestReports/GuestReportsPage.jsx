@@ -186,13 +186,13 @@ export default function GuestReportsPage({ isReportOpen, setIsReportOpen }) {
     <div className="space-y-6 pb-24 sm:pb-16">
       
       {/* Header Banner - Matching Dashboard, Gallery & Finance Gradient Banner */}
-      <div className="relative overflow-hidden rounded-3xl theme-gradient-banner text-white p-6 sm:p-8 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl theme-gradient-banner text-white p-4 sm:p-8 shadow-xl">
         <div className="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute -right-6 -bottom-6 opacity-20 pointer-events-none z-0 hidden sm:block">
           <GangCintaLogo size="xl" variant="plain" />
         </div>
 
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
           <div className="space-y-3.5 max-w-3xl">
             <div className="flex items-center gap-2.5 flex-wrap">
               <GangCintaLogo size="sm" variant="badge" />

@@ -668,46 +668,46 @@ export default function Dashboard({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
         {/* Card Pintasan Live Chat Warga */}
-        <div className="relative overflow-hidden rounded-3xl theme-gradient-banner text-white p-6 shadow-xl flex flex-col justify-between space-y-4 transition-all">
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl theme-gradient-banner text-white p-3.5 sm:p-6 shadow-xl flex flex-col justify-between space-y-3 sm:space-y-4 transition-all">
           <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none" />
           
           <div className="relative z-10">
-            <div className="flex items-center justify-between border-b border-white/20 pb-3 mb-4">
-              <div className="flex items-center gap-2.5">
-                <div className="p-2 rounded-xl bg-white/20 border border-white/30 text-amber-300">
-                  <MessageSquare className="w-5 h-5" />
+            <div className="flex items-center justify-between border-b border-white/20 pb-2.5 sm:pb-3 mb-3 sm:mb-4 gap-2">
+              <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                <div className="p-1.5 sm:p-2 rounded-xl bg-white/20 border border-white/30 text-amber-300 flex-shrink-0">
+                  <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <div>
-                  <h3 className="font-bold text-sm text-white">
+                <div className="min-w-0">
+                  <h3 className="font-bold text-xs sm:text-sm text-white truncate">
                     Obrolan Guyub Rukun Warga
                   </h3>
-                  <p className="text-[11px] text-white/80">
-                    Kanal silaturahmi & info cepat antar warga Gang Cinta RT 028 RW 005
+                  <p className="text-[10px] sm:text-[11px] text-white/80 truncate">
+                    Kanal silaturahmi & info cepat antar warga Gang Cinta
                   </p>
                 </div>
               </div>
-              <span className="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-emerald-500/30 text-emerald-200 border border-emerald-300/40 flex items-center gap-1.5 backdrop-blur-md">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="text-[9px] sm:text-[10px] font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-emerald-500/30 text-emerald-200 border border-emerald-300/40 flex items-center gap-1.5 backdrop-blur-md flex-shrink-0">
+                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                 Live Room
               </span>
             </div>
 
             {/* Cuplikan Pesan Terkini */}
-            <div className="space-y-2.5">
+            <div className="space-y-2 sm:space-y-2.5">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-white/80 uppercase tracking-wider">
+                <span className="text-[10px] sm:text-xs font-semibold text-white/80 uppercase tracking-wider">
                   Pesan Terbaru dari Tetangga:
                 </span>
                 <button 
                   onClick={onOpenChat}
-                  className="text-xs font-bold text-amber-300 hover:text-amber-200 transition"
+                  className="text-[11px] sm:text-xs font-bold text-amber-300 hover:text-amber-200 transition"
                 >
                   Buka Room &gt;
                 </button>
               </div>
 
               {chatMessages.length === 0 ? (
-                <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-center text-xs text-white/70">
+                <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-center text-[11px] sm:text-xs text-white/70">
                   Memuat obrolan warga...
                 </div>
               ) : (
@@ -715,22 +715,22 @@ export default function Dashboard({
                   <div 
                     key={m.id} 
                     onClick={onOpenChat}
-                    className="p-3 rounded-2xl bg-white/15 border border-white/20 hover:bg-white/25 backdrop-blur-md transition cursor-pointer flex items-start gap-3 group"
+                    className="p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-white/15 border border-white/20 hover:bg-white/25 backdrop-blur-md transition cursor-pointer flex items-start gap-2.5 group"
                     title="Klik untuk membuka obrolan lengkap"
                   >
                     <img
                       src={getSenderAvatar(m)}
                       alt={getSenderName(m)}
-                      className="w-8 h-8 rounded-full object-cover border border-white/40 flex-shrink-0 mt-0.5 shadow-2xs group-hover:scale-105 transition"
+                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover border border-white/40 flex-shrink-0 mt-0.5 shadow-2xs group-hover:scale-105 transition"
                     />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-xs text-white truncate">{getSenderName(m)}</span>
-                        <span className="text-[10px] text-amber-300 font-mono">
+                        <span className="font-bold text-[11px] sm:text-xs text-white truncate">{getSenderName(m)}</span>
+                        <span className="text-[9px] sm:text-[10px] text-amber-300 font-mono">
                           {new Date(m.timestamp).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })}
                         </span>
                       </div>
-                      <p className="text-xs text-white/80 line-clamp-1 mt-0.5">
+                      <p className="text-[11px] sm:text-xs text-white/80 line-clamp-1 mt-0.5">
                         {m.message}
                       </p>
                     </div>
@@ -740,58 +740,59 @@ export default function Dashboard({
             </div>
           </div>
 
-          <div className="relative z-10 space-y-2 pt-3 border-t border-white/20">
+          <div className="relative z-10 space-y-1.5 sm:space-y-2 pt-2.5 sm:pt-3 border-t border-white/20">
             <button
               onClick={onOpenChat}
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-white/20 hover:bg-white/30 backdrop-blur-md text-white font-extrabold text-xs shadow-md border border-white/30 transition transform active:scale-98"
+              className="w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl sm:rounded-2xl bg-white/20 hover:bg-white/30 backdrop-blur-md text-white font-extrabold text-[11px] sm:text-xs shadow-md border border-white/30 transition transform active:scale-98"
             >
-              <MessageSquare className="w-4 h-4 text-amber-300" />
+              <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300" />
               <span>Buka Live Chat Warga (Pojok Bawah)</span>
             </button>
-            <p className="text-[11px] text-center text-white/80">
+            <p className="text-[10px] sm:text-[11px] text-center text-white/80">
               💬 Obrolan warga melayang di pojok kanan bawah, bisa dibuka kapan saja dari halaman mana pun.
             </p>
           </div>
         </div>
 
         {/* Galeri Momen Acara Terbaru */}
-        <div className="relative overflow-hidden rounded-3xl theme-gradient-banner text-white p-6 shadow-xl flex flex-col justify-between space-y-4 transition-all">
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl theme-gradient-banner text-white p-3.5 sm:p-6 shadow-xl flex flex-col justify-between space-y-3 sm:space-y-4 transition-all">
           <div className="absolute bottom-0 right-0 w-48 h-48 bg-amber-400/15 rounded-full blur-2xl pointer-events-none" />
           
           <div className="relative z-10">
-            <div className="flex items-center justify-between border-b border-white/20 pb-3 mb-4">
-              <div className="flex items-center gap-2">
-                <div className="p-2 rounded-xl bg-white/20 border border-white/30 text-amber-300">
-                  <Camera className="w-5 h-5" />
+            <div className="flex items-center justify-between border-b border-white/20 pb-2.5 sm:pb-3 mb-3 sm:mb-4 gap-2">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="p-1.5 sm:p-2 rounded-xl bg-white/20 border border-white/30 text-amber-300 flex-shrink-0">
+                  <Camera className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <h3 className="font-bold text-sm text-white">Dokumentasi Momen Gang Cinta</h3>
+                <h3 className="font-bold text-xs sm:text-sm text-white truncate">Dokumentasi Momen Gang Cinta</h3>
               </div>
               <button
                 onClick={() => setActiveTab("moments")}
-                className="text-xs font-bold text-amber-300 hover:text-amber-200 transition"
+                className="text-[11px] sm:text-xs font-bold text-amber-300 hover:text-amber-200 transition flex-shrink-0"
               >
                 Lihat Semua
               </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* 2 Kolom Rapi di Layar HP & Tablet */}
+            <div className="grid grid-cols-2 gap-2 sm:gap-3">
               {moments.slice(0, 2).map((m) => (
                 <div 
                   key={m.id}
                   onClick={() => setActiveTab("moments")}
-                  className="rounded-2xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md cursor-pointer group hover:bg-white/20 hover:shadow-lg transition"
+                  className="rounded-xl sm:rounded-2xl overflow-hidden border border-white/20 bg-white/10 backdrop-blur-md cursor-pointer group hover:bg-white/20 hover:shadow-lg transition"
                 >
-                  <div className="aspect-video relative overflow-hidden bg-black/20">
+                  <div className="aspect-[4/3] sm:aspect-video relative overflow-hidden bg-black/20">
                     <img src={m.imageUrl} alt={m.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
-                    <span className="absolute top-2 left-2 text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-black/60 text-amber-300 backdrop-blur-md border border-white/20">
+                    <span className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 text-[8px] sm:text-[9px] font-extrabold px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full bg-black/60 text-amber-300 backdrop-blur-md border border-white/20">
                       {m.category}
                     </span>
                   </div>
-                  <div className="p-3">
-                    <h5 className="font-bold text-xs text-white line-clamp-1 group-hover:text-amber-300 transition">
+                  <div className="p-2 sm:p-3">
+                    <h5 className="font-bold text-[11px] sm:text-xs text-white line-clamp-1 group-hover:text-amber-300 transition">
                       {m.title}
                     </h5>
-                    <p className="text-[11px] text-white/70 mt-1">
+                    <p className="text-[9px] sm:text-[11px] text-white/70 mt-0.5 sm:mt-1">
                       {new Date(m.eventDate).toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' })}
                     </p>
                   </div>
@@ -800,7 +801,7 @@ export default function Dashboard({
             </div>
           </div>
 
-          <div className="relative z-10 p-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-[11px] text-white/80">
+          <div className="relative z-10 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-[10px] sm:text-[11px] text-white/80">
             📸 Dokumentasi foto acara diunggah oleh Admin untuk menyimpan kenangan guyub warga.
           </div>
         </div>
@@ -808,7 +809,7 @@ export default function Dashboard({
       </div>
 
       {/* SECTION: Laporan Tamu Menginap & Wewenang Ijin Ketua Gang */}
-      <div className="relative overflow-hidden rounded-3xl theme-gradient-banner text-white p-5 sm:p-7 shadow-xl space-y-4 transition-all">
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl theme-gradient-banner text-white p-3.5 sm:p-7 shadow-xl space-y-3 sm:space-y-4 transition-all">
         {/* Background Glows & Watermark Logo */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-amber-400/20 rounded-full blur-2xl pointer-events-none" />
@@ -816,25 +817,25 @@ export default function Dashboard({
           <GangCintaLogo size="xl" />
         </div>
 
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/20 pb-4">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2.5 rounded-xl bg-white/20 border border-white/30 text-amber-300">
-              <UserPlus className="w-5 h-5" />
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 border-b border-white/20 pb-3 sm:pb-4">
+          <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+            <div className="p-2 sm:p-2.5 rounded-xl bg-white/20 border border-white/30 text-amber-300 flex-shrink-0">
+              <UserPlus className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="font-bold text-sm sm:text-base text-white">
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                <h3 className="font-bold text-xs sm:text-base text-white truncate">
                   {user?.role === "admin" 
                     ? "Wewenang Ijin Tamu Menginap (Khusus Ketua Gang Cinta)" 
                     : "Pelaporan Tamu Menginap 1x24 Jam Gang Cinta"}
                 </h3>
                 {user?.role === "admin" && (
-                  <span className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-amber-300/30 text-amber-200 border border-amber-300/40">
+                  <span className="text-[9px] sm:text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-amber-300/30 text-amber-200 border border-amber-300/40">
                     Ketua Gang Cinta
                   </span>
                 )}
               </div>
-              <p className="text-xs text-white/80 mt-0.5">
+              <p className="text-[10px] sm:text-xs text-white/80 mt-0.5 line-clamp-1 sm:line-clamp-none">
                 {user?.role === "admin"
                   ? "Hanya Ketua Gang yang berwenang memberikan ijin ('Ijinkan Tamu') atau menolak ('Tidak Diijinkan')."
                   : "Data tamu bersifat privat, hanya Anda dan Ketua Gang yang dapat melihat status ijinnya."}
@@ -844,15 +845,15 @@ export default function Dashboard({
 
           <button
             onClick={() => setActiveTab("guests")}
-            className="inline-flex items-center gap-1.5 text-xs font-extrabold text-white bg-white/20 hover:bg-white/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/30 transition shadow-sm self-start sm:self-auto active:scale-95"
+            className="inline-flex items-center justify-center gap-1.5 text-xs font-extrabold text-white bg-white/20 hover:bg-white/30 backdrop-blur-md px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full border border-white/30 transition shadow-sm self-start sm:self-auto active:scale-95 w-full sm:w-auto"
           >
-            {user?.role === "admin" ? "Buka Kelola Ijin Tamu" : "Buka Menu Lapor Tamu"}
-            <ChevronRight className="w-4 h-4" />
+            <span>{user?.role === "admin" ? "Buka Kelola Ijin Tamu" : "Buka Menu Lapor Tamu"}</span>
+            <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
         </div>
 
         {guestReports.length === 0 ? (
-          <div className="relative z-10 p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-center text-xs text-white/80 space-y-2">
+          <div className="relative z-10 p-4 sm:p-6 rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-center text-xs text-white/80 space-y-1.5 sm:space-y-2">
             <p>Belum ada riwayat tamu menginap yang dilaporkan.</p>
             <button
               onClick={() => setActiveTab("guests")}

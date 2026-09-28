@@ -300,19 +300,19 @@ export default function CommunityChat() {
   };
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-sm flex flex-col h-[520px] relative">
+    <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200 p-3.5 sm:p-6 shadow-sm flex flex-col h-[520px] relative">
       
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
-        <div className="flex items-center gap-2">
-          <div className="p-2 rounded-xl bg-emerald-100 text-emerald-700">
+      <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 sm:pb-3 mb-2.5 sm:mb-3 gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="p-1.5 sm:p-2 rounded-xl bg-emerald-100 text-emerald-700 flex-shrink-0">
             <MessageSquare className="w-4 h-4" />
           </div>
-          <div>
-            <h3 className="font-bold text-sm text-slate-900">
-              Obrolan Guyub Rukun Warga Gang Cinta
+          <div className="min-w-0">
+            <h3 className="font-bold text-xs sm:text-sm text-slate-900 truncate">
+              Obrolan Guyub Rukun Warga
             </h3>
-            <p className="text-[11px] text-slate-400">
+            <p className="text-[10px] sm:text-[11px] text-slate-400 truncate">
               Kanal silaturahmi & info cepat warga Gang Cinta (RT 028 RW 005)
             </p>
           </div>

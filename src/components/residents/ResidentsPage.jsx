@@ -181,7 +181,7 @@ export default function ResidentsPage({ isRegisterOpen, setIsRegisterOpen }) {
     <div className="space-y-6 pb-24 sm:pb-12">
       
       {/* Header Banner - Menyesuaikan Otomatis dengan Tema Warna */}
-      <div className="relative overflow-hidden rounded-3xl theme-gradient-banner text-white p-6 sm:p-8 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl theme-gradient-banner text-white p-4 sm:p-8 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
         <div className="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute -right-6 -bottom-6 opacity-20 pointer-events-none z-0 hidden sm:block">
           <GangCintaLogo size="xl" variant="plain" />

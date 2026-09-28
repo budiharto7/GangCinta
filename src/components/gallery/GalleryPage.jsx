@@ -282,12 +282,12 @@ export default function GalleryPage({ onOpenUpload }) {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-6">
           {filteredMoments.map((moment) => (
             <div
               key={moment.id}
               onClick={() => setActiveMoment(moment)}
-              className="group relative overflow-hidden rounded-3xl theme-gradient-banner text-white shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer flex flex-col border border-white/20 hover:scale-[1.01]"
+              className="group relative overflow-hidden rounded-2xl sm:rounded-3xl theme-gradient-banner text-white shadow-md hover:shadow-2xl transition-all duration-300 cursor-pointer flex flex-col border border-white/20 hover:scale-[1.01]"
             >
               {/* Image Container with Badges */}
               <div className="relative aspect-[4/3] overflow-hidden bg-black/20">
@@ -325,35 +325,35 @@ export default function GalleryPage({ onOpenUpload }) {
               </div>
 
               {/* Card Body */}
-              <div className="p-5 flex-1 flex flex-col justify-between space-y-4 bg-white/10 backdrop-blur-md">
+              <div className="p-3 sm:p-5 flex-1 flex flex-col justify-between space-y-2 sm:space-y-4 bg-white/10 backdrop-blur-md">
                 <div>
-                  <h3 className="font-extrabold text-base text-white group-hover:text-amber-300 transition line-clamp-2">
+                  <h3 className="font-extrabold text-xs sm:text-base text-white group-hover:text-amber-300 transition line-clamp-1 sm:line-clamp-2">
                     {moment.title}
                   </h3>
-                  <p className="text-xs text-white/80 mt-1.5 line-clamp-2 leading-relaxed">
+                  <p className="text-[10px] sm:text-xs text-white/80 mt-1 sm:mt-1.5 line-clamp-1 sm:line-clamp-2 leading-relaxed">
                     {moment.description}
                   </p>
                 </div>
 
                 {/* Meta Information & Like Button */}
-                <div className="pt-3 border-t border-white/15 flex items-center justify-between text-xs text-white/80">
+                <div className="pt-2 sm:pt-3 border-t border-white/15 flex items-center justify-between text-[10px] sm:text-xs text-white/80">
                   <div className="space-y-0.5">
-                    <div className="flex items-center gap-1.5 text-[11px] text-white/90">
-                      <Calendar className="w-3.5 h-3.5 text-amber-300" />
+                    <div className="flex items-center gap-1 text-[9px] sm:text-[11px] text-white/90">
+                      <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300" />
                       <span>{new Date(moment.eventDate).toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-[11px] text-white/70">
-                      <MapPin className="w-3.5 h-3.5 text-amber-300" />
-                      <span className="truncate max-w-[140px]">{moment.location}</span>
+                    <div className="flex items-center gap-1 text-[9px] sm:text-[11px] text-white/70">
+                      <MapPin className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300" />
+                      <span className="truncate max-w-[80px] sm:max-w-[140px]">{moment.location}</span>
                     </div>
                   </div>
 
                   <button
                     onClick={(e) => handleLike(moment.id, e)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-500/30 hover:bg-rose-500/40 text-rose-100 font-extrabold transition border border-rose-300/40 shadow-sm active:scale-95"
+                    className="flex items-center gap-1 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full bg-rose-500/30 hover:bg-rose-500/40 text-rose-100 font-extrabold transition border border-rose-300/40 shadow-sm active:scale-95"
                   >
-                    <Heart className="w-3.5 h-3.5 fill-rose-300 text-rose-300" />
-                    <span className="text-xs">{moment.likes || 0}</span>
+                    <Heart className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-rose-300 text-rose-300" />
+                    <span className="text-[10px] sm:text-xs">{moment.likes || 0}</span>
                   </button>
                 </div>
 

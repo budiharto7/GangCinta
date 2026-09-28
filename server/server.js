@@ -3,7 +3,7 @@ import cors from 'cors';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import { db } from './database.js';
+import { db, initDB } from './database.js';
 import { processKKImageOCR } from './kkOcrService.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -386,8 +386,11 @@ app.use((req, res, next) => {
 });
 
 if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Gang Cinta API & Database Server running on port ${PORT}`);
+  // Inisialisasi MongoDB dulu, baru start server
+  initDB().then(() => {
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 Gang Cinta API & Database Server running on port ${PORT}`);
+    });
   });
 }
 

@@ -1,11 +1,46 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import mongoose from 'mongoose';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// ============================================================
+// MONGODB - Gantikan JSON file dengan database cloud permanen
+// ============================================================
+const MONGODB_URI = process.env.MONGODB_URI;
 
-const DB_FILE = path.join(__dirname, 'db.json');
+// Schema: simpan seluruh data sebagai 1 dokumen (simple & efisien untuk RT)
+const GangCintaSchema = new mongoose.Schema({
+  key:  { type: String, default: 'main' },
+  data: { type: mongoose.Schema.Types.Mixed }
+}, { minimize: false });
+
+const GangCintaModel = mongoose.models.GangCinta
+  || mongoose.model('GangCinta', GangCintaSchema);
+
+// In-memory cache agar readDB() tetap sinkron & cepat
+let _cache = null;
+
+// Dipanggil sekali saat server start - load data dari MongoDB ke cache
+export async function initDB() {
+  if (!MONGODB_URI) {
+    console.warn('⚠️  MONGODB_URI tidak ada, pakai DEFAULT_DATA');
+    _cache = DEFAULT_DATA;
+    return;
+  }
+  try {
+    await mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 5000 });
+    const doc = await GangCintaModel.findOne({ key: 'main' });
+    if (doc?.data) {
+      _cache = { ...DEFAULT_DATA, ...doc.data };
+      console.log('✅ MongoDB terhubung - data berhasil dimuat');
+    } else {
+      _cache = DEFAULT_DATA;
+      await GangCintaModel.create({ key: 'main', data: DEFAULT_DATA });
+      console.log('✅ MongoDB terhubung - data awal tersimpan');
+    }
+  } catch (err) {
+    console.error('❌ MongoDB gagal konek:', err.message);
+    _cache = _cache || DEFAULT_DATA;
+  }
+}
+
 
 // Default initial data for Gang Cinta - Perumahan Bumi Nagara Lestari (RT 028 RW 005)
 const DEFAULT_DATA = {
@@ -498,26 +533,21 @@ const DEFAULT_DATA = {
   chatMessages: []
 };
 
-// Safe Database file operations
+// Safe Database operations
+// readDB() - sinkron, baca dari cache (cepat)
 function readDB() {
-  try {
-    if (!fs.existsSync(DB_FILE)) {
-      fs.writeFileSync(DB_FILE, JSON.stringify(DEFAULT_DATA, null, 2), 'utf-8');
-      return DEFAULT_DATA;
-    }
-    const raw = fs.readFileSync(DB_FILE, 'utf-8');
-    return JSON.parse(raw);
-  } catch (err) {
-    console.error("Error reading database file, using fallback:", err);
-    return DEFAULT_DATA;
-  }
+  return _cache || DEFAULT_DATA;
 }
 
+// writeDB() - update cache + simpan ke MongoDB async (tidak block response)
 function writeDB(data) {
-  try {
-    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
-  } catch (err) {
-    console.error("Error writing database file:", err);
+  _cache = data;
+  if (MONGODB_URI && mongoose.connection.readyState === 1) {
+    GangCintaModel.findOneAndUpdate(
+      { key: 'main' },
+      { data },
+      { upsert: true, new: true }
+    ).catch(err => console.error('MongoDB write error:', err.message));
   }
 }
 

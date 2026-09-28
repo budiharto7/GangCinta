@@ -335,6 +335,9 @@ export default function EditMyKKModal({ isOpen, onClose, family, onFamilyUpdated
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
           
+          {/* Upload / Foto Scan KK Auto-Fill Khusus Data KK User Sendiri */}
+          <KKUploadDropzone onKKParsed={handleKKParsed} title="Unggah / Foto Scan Kartu Keluarga (Auto-Fill Form)" />
+
           {/* Section 1: Informasi Rumah & KK */}
           <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
             <h4 className="text-xs font-bold uppercase text-slate-500 tracking-wider flex items-center gap-2">

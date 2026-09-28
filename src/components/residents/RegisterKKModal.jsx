@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { familyService, authService } from "../../services/storageService";
 import { api } from "../../services/apiService";
 import { useAuth } from "../../context/AuthContext";
-import KKUploadDropzone from "../common/KKUploadDropzone";
 import { X, UserPlus, Home, KeyRound, Phone, ShieldCheck, CheckCircle2, UserCheck, Sparkles, Award } from "lucide-react";
 
 export default function RegisterKKModal({ isOpen, onClose, onKKRegistered }) {

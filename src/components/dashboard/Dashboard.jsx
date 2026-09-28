@@ -458,7 +458,7 @@ export default function Dashboard({
       </div>
 
       {/* SECTION: Transparansi Keuangan Kas Lengkap (Saldo Awal, Masuk, Keluar, Saldo Akhir 5 Pos) */}
-      <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl theme-gradient-banner text-white p-3.5 sm:p-7 shadow-xl space-y-4 sm:space-y-6 transition-all">
+      <div className="relative overflow-hidden rounded-3xl theme-gradient-banner text-white p-5 sm:p-7 shadow-xl space-y-6 transition-all">
         {/* Glowing Background Orbs & Translucent Watermark Logo */}
         <div className="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-10 -left-10 w-56 h-56 bg-amber-400/20 rounded-full blur-2xl pointer-events-none" />
@@ -466,136 +466,89 @@ export default function Dashboard({
           <GangCintaLogo size="xl" />
         </div>
 
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-white/20 pb-3.5 sm:pb-5">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/20 pb-5">
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 rounded-full bg-amber-300 shadow-sm animate-pulse"></span>
-              <h2 className="text-sm sm:text-lg font-extrabold text-white tracking-tight">
+              <span className="w-3.5 h-3.5 rounded-full bg-amber-300 shadow-sm animate-pulse"></span>
+              <h2 className="text-base sm:text-lg font-extrabold text-white tracking-tight">
                 Transparansi Pembukuan Kas Gang Cinta - Perumahan Bumi Nagara Lestari (RT 028 RW 005)
               </h2>
             </div>
-            <p className="text-[11px] sm:text-xs text-white/80 mt-1">
+            <p className="text-xs text-white/80 mt-1">
               Transparansi saldo awal dan pengeluaran tiap pos agar seluruh warga dapat memantau kas lingkungan secara terbuka.
             </p>
           </div>
 
           <button
             onClick={() => setActiveTab("finance")}
-            className="inline-flex items-center justify-center gap-1.5 text-xs font-extrabold text-white bg-white/20 hover:bg-white/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/30 transition shadow-sm self-start sm:self-auto active:scale-95 w-full sm:w-auto"
+            className="inline-flex items-center gap-1.5 text-xs font-extrabold text-white bg-white/20 hover:bg-white/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/30 transition shadow-sm self-start sm:self-auto active:scale-95"
           >
             <span>Buka Kalender & Detail Kas</span>
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
 
-        {/* 4 Summary Balances Grid - Responsive 2x2 on Mobile, 4 Cols on Desktop */}
-        <div className="relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
-          <div className="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 shadow-md flex flex-col justify-between min-h-[90px] sm:min-h-[115px] space-y-1 sm:space-y-2">
+        {/* 4 Summary Balances Grid - Theme Infused & Glassmorphic */}
+        <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="p-5 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 shadow-md flex flex-col justify-between min-h-[115px] space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] sm:text-xs font-extrabold text-white/90 uppercase tracking-wider truncate">Total Saldo Awal</span>
-              <Wallet className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 flex-shrink-0" />
+              <span className="text-xs font-extrabold text-white/90 uppercase tracking-wider">Total Saldo Awal</span>
+              <Wallet className="w-4 h-4 text-amber-300 flex-shrink-0" />
             </div>
-            <div className="text-base sm:text-xl font-black text-white my-0.5 sm:my-1 tabular-nums tracking-tight truncate">
+            <div className="text-lg sm:text-xl font-black text-white my-1 tabular-nums tracking-tight">
               {formatRupiah(summary.startingBalance)}
             </div>
-            <span className="text-[9px] sm:text-[11px] text-white/70 font-medium truncate">Total awal 5 pos per 1 Sept</span>
+            <span className="text-[11px] text-white/70 font-medium">Total awal 5 pos per 1 Sept</span>
           </div>
 
-          <div className="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-emerald-500/25 backdrop-blur-md border border-emerald-300/30 shadow-md flex flex-col justify-between min-h-[90px] sm:min-h-[115px] space-y-1 sm:space-y-2">
+          <div className="p-5 rounded-2xl bg-emerald-500/25 backdrop-blur-md border border-emerald-300/30 shadow-md flex flex-col justify-between min-h-[115px] space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] sm:text-xs font-extrabold text-emerald-200 uppercase tracking-wider truncate">Total Pemasukan</span>
-              <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-300 flex-shrink-0" />
+              <span className="text-xs font-extrabold text-emerald-200 uppercase tracking-wider">Total Pemasukan</span>
+              <ArrowUpRight className="w-4 h-4 text-emerald-300 flex-shrink-0" />
             </div>
-            <div className="text-base sm:text-xl font-black text-emerald-200 my-0.5 sm:my-1 tabular-nums tracking-tight truncate">
+            <div className="text-lg sm:text-xl font-black text-emerald-200 my-1 tabular-nums tracking-tight">
               {formatRupiah(summary.totalIncome, "+")}
             </div>
-            <span className="text-[9px] sm:text-[11px] text-emerald-200/90 font-bold truncate">Iuran rutin 25 KK & kas</span>
+            <span className="text-[11px] text-emerald-200/90 font-bold">Iuran rutin 25 KK & kas</span>
           </div>
 
-          <div className="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-rose-500/25 backdrop-blur-md border border-rose-300/30 shadow-md flex flex-col justify-between min-h-[90px] sm:min-h-[115px] space-y-1 sm:space-y-2">
+          <div className="p-5 rounded-2xl bg-rose-500/25 backdrop-blur-md border border-rose-300/30 shadow-md flex flex-col justify-between min-h-[115px] space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] sm:text-xs font-extrabold text-rose-200 uppercase tracking-wider truncate">Total Pengeluaran</span>
-              <ArrowDownRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-rose-300 flex-shrink-0" />
+              <span className="text-xs font-extrabold text-rose-200 uppercase tracking-wider">Total Pengeluaran</span>
+              <ArrowDownRight className="w-4 h-4 text-rose-300 flex-shrink-0" />
             </div>
-            <div className="text-base sm:text-xl font-black text-rose-200 my-0.5 sm:my-1 tabular-nums tracking-tight truncate">
+            <div className="text-lg sm:text-xl font-black text-rose-200 my-1 tabular-nums tracking-tight">
               {formatRupiah(summary.totalExpense, "-")}
             </div>
-            <span className="text-[9px] sm:text-[11px] text-rose-200/90 font-bold truncate">{summary.expenseList.length} transaksi peruntukan</span>
+            <span className="text-[11px] text-rose-200/90 font-bold">{summary.expenseList.length} transaksi peruntukan</span>
           </div>
 
-          <div className="p-3 sm:p-5 rounded-xl sm:rounded-2xl bg-amber-500/25 backdrop-blur-md border border-amber-300/30 shadow-md flex flex-col justify-between min-h-[90px] sm:min-h-[115px] space-y-1 sm:space-y-2">
+          <div className="p-5 rounded-2xl bg-amber-500/25 backdrop-blur-md border border-amber-300/30 shadow-md flex flex-col justify-between min-h-[115px] space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] sm:text-xs font-extrabold text-amber-200 uppercase tracking-wider truncate">Total Saldo Akhir</span>
-              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300 flex-shrink-0" />
+              <span className="text-xs font-extrabold text-amber-200 uppercase tracking-wider">Total Saldo Akhir</span>
+              <Sparkles className="w-4 h-4 text-amber-300 flex-shrink-0" />
             </div>
-            <div className="text-base sm:text-xl font-black text-amber-200 my-0.5 sm:my-1 tabular-nums tracking-tight truncate">
+            <div className="text-lg sm:text-xl font-black text-amber-200 my-1 tabular-nums tracking-tight">
               {formatRupiah(summary.endingBalance)}
             </div>
-            <span className="text-[9px] sm:text-[11px] text-amber-200/90 font-extrabold truncate">Kas bersih per hari ini</span>
+            <span className="text-[11px] text-amber-200/90 font-extrabold">Kas bersih per hari ini</span>
           </div>
         </div>
 
         {/* Tabel Rapi Transparansi Saldo Awal & Akhir 5 Pos Terpisah - Theme Infused */}
         <div className="relative z-10 w-full max-w-full overflow-hidden">
           <div className="flex items-center justify-between mb-2.5 flex-wrap gap-2">
-            <h3 className="text-[11px] sm:text-xs font-extrabold uppercase text-white/90 tracking-wider flex items-center gap-1.5">
-              <FileSpreadsheet className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-300" />
+            <h3 className="text-xs font-extrabold uppercase text-white/90 tracking-wider flex items-center gap-1.5">
+              <FileSpreadsheet className="w-4 h-4 text-amber-300" />
               Tabel Saldo Awal & Akhir (5 Pos Anggaran)
             </h3>
-            <span className="text-[10px] sm:text-[11px] text-white/70">
+            <span className="text-[11px] text-white/70">
+              <span className="sm:hidden text-amber-300 font-semibold">👉 Geser tabel &gt;</span>
               <span className="hidden sm:inline font-medium">Periode: September 2026</span>
             </span>
           </div>
 
-          {/* TAMPILAN HP (Mobile First Cards: Pas di Layar, Rapi, & Tidak Perlu Geser) */}
-          <div className="sm:hidden space-y-2.5">
-            {categories.map((cat) => {
-              const data = summary.categoryBreakdown[cat.id] || { starting: 0, income: 0, expense: 0, ending: 0 };
-              return (
-                <div 
-                  key={cat.id} 
-                  className="p-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-xs flex flex-col gap-2"
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className="p-1.5 rounded-lg bg-white/20 border border-white/30 text-white flex-shrink-0 text-xs">
-                        {getCategoryIcon(cat.id)}
-                      </span>
-                      <span className="font-extrabold text-xs text-white truncate">{cat.name}</span>
-                    </div>
-                    <div className="text-right flex-shrink-0">
-                      <span className="text-[9px] text-white/70 block uppercase font-bold tracking-wider">Saldo Akhir</span>
-                      <span className="font-black text-xs text-amber-300 font-mono tabular-nums">
-                        {formatRupiah(data.ending)}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-1.5 pt-2 border-t border-white/10 text-center font-mono">
-                    <div className="p-1.5 rounded-lg bg-white/5">
-                      <span className="text-[9px] text-white/60 block">Awal</span>
-                      <span className="text-[11px] font-bold text-white tabular-nums">{formatRupiah(data.starting)}</span>
-                    </div>
-                    <div className="p-1.5 rounded-lg bg-emerald-500/15 border border-emerald-400/20">
-                      <span className="text-[9px] text-emerald-200/80 block">Masuk</span>
-                      <span className="text-[11px] font-bold text-emerald-300 tabular-nums">
-                        {formatRupiah(data.income, data.income > 0 ? "+" : "")}
-                      </span>
-                    </div>
-                    <div className="p-1.5 rounded-lg bg-rose-500/15 border border-rose-400/20">
-                      <span className="text-[9px] text-rose-200/80 block">Keluar</span>
-                      <span className="text-[11px] font-bold text-rose-300 tabular-nums">
-                        {formatRupiah(data.expense, data.expense > 0 ? "-" : "")}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* TAMPILAN DESKTOP & TABLET (Tabel Luas Lengkap Seperti di PC) */}
-          <div className="hidden sm:block overflow-x-auto rounded-2xl border border-white/20 shadow-md bg-white/10 backdrop-blur-md scrollbar-thin">
+          <div className="overflow-x-auto rounded-2xl border border-white/20 shadow-md bg-white/10 backdrop-blur-md scrollbar-thin">
             <table className="w-full text-left text-xs min-w-[520px]">
               <thead className="bg-white/20 text-white font-extrabold border-b border-white/20">
                 <tr>

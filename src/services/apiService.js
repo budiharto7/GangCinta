@@ -9,7 +9,11 @@ import {
 } from "./storageService";
 
 // API Service connecting frontend with Express backend & automatic fallback to local database
-const BASE_URL = "/api";
+// Di production (Netlify), VITE_API_URL mengarah ke backend Railway
+// Di development lokal, fallback ke /api (proxy via Vite)
+const BASE_URL = import.meta.env.VITE_API_URL 
+  ? `${import.meta.env.VITE_API_URL}/api`
+  : "/api";
 
 async function request(endpoint, options = {}) {
   try {

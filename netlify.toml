@@ -4,6 +4,9 @@
 
 [build.environment]
   NODE_VERSION = "18"
+  # VITE_API_URL diisi setelah backend Railway sudah di-deploy
+  # Contoh: VITE_API_URL = "https://gangcinta-backend.up.railway.app"
+  # Set via: Netlify Dashboard > Site configuration > Environment variables
 
 # Redirect semua request ke index.html (untuk React Router SPA)
 [[redirects]]
@@ -11,10 +14,12 @@
   to = "/index.html"
   status = 200
 
-# Header keamanan
+# Header keamanan + izinkan CORS ke Railway backend
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
+    Access-Control-Allow-Origin = "*"
+

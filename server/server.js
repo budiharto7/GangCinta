@@ -12,8 +12,15 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+// CORS: izinkan akses dari Netlify & development lokal
+app.use(cors({
+  origin: process.env.FRONTEND_URL 
+    ? [process.env.FRONTEND_URL, 'http://localhost:3000', 'http://localhost:5173']
+    : true, // development: izinkan semua
+  credentials: true
+}));
 app.use(express.json({ limit: '15mb' }));
+
 
 // --- API ROUTES ---
 
